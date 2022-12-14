@@ -69,7 +69,6 @@ locals {
   aws_iam_admin_roles = {
     # <role> : "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/<role>"
   }
-  create_admin_namespace = true # Used for karpenter deployment
   # node affinity - Used for karpenter affinity configuration
   default_node_affinity = {
     nodeAffinity : {
@@ -94,7 +93,7 @@ locals {
 
   # Karpenter
   enable_karpenter           = true
-  karpenter_namespace        = "flux-system"
+  karpenter_namespace        = "karpenter"
   karpenter_create_namespace = true
   karpenter_release_name     = "karpenter"
   karpenter_version          = "v0.17.0"

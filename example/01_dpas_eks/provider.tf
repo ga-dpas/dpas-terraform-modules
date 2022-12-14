@@ -3,6 +3,7 @@ provider "aws" {
   max_retries = 10
 }
 
+# Needed for aws public ECR
 provider "aws" {
   region = "us-east-1"
   alias  = "virginia"
