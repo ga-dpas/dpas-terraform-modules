@@ -6,6 +6,7 @@ module "fluxcd_flux2" {
 
   flux2_namespace        = local.flux2_namespace
   flux2_create_namespace = local.flux2_create_namespace
+  flux2_node_affinity    = local.default_node_affinity
 
   # flux chart installation versions
   # Charts: https://github.com/fluxcd-community/helm-charts/tree/main/charts
