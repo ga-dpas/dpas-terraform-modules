@@ -1,0 +1,26 @@
+helmcontroller:
+  create: true
+  affinity: ${node_affinity}
+
+imageautomationcontroller:
+  create: true
+  affinity: ${node_affinity}
+
+imagereflectorcontroller:
+  create: true
+  container:
+    additionalargs:
+    - --aws-autologin-for-ecr
+  affinity: ${node_affinity}
+
+kustomizecontroller:
+  create: true
+  affinity: ${node_affinity}
+
+notificationcontroller:
+  create: true
+  affinity: ${node_affinity}
+
+sourcecontroller:
+  create: true
+  affinity: ${node_affinity}

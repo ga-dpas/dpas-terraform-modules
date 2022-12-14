@@ -1,0 +1,18 @@
+secret:
+  # -- Create a secret for the git repository. Defaults to false.
+  create: false
+
+gitRepository:
+  spec:
+    url: "${git_repo_url}"
+    # The secret name containing the Git credentials.
+    secretRef:
+      name: "${flux_git_secret}"
+    ref:
+      branch: "${git_branch}"
+kustomization:
+  spec:
+    interval: "${git_poll_interval}"
+    path: "${git_path}"
+    prune: true
+    timeout: "${git_timeout}"
