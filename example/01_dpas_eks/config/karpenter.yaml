@@ -1,0 +1,10 @@
+clusterName: ${cluster_name}
+clusterEndpoint: ${cluster_endpoint}
+aws:
+  defaultInstanceProfile: ${instance_profile}
+#  interruptionQueueName: ${cluster_name}
+serviceAccount:
+  create: true
+  annotations:
+    eks.amazonaws.com/role-arn: ${service_account_arn}
+affinity: ${node_affinity}

@@ -1,0 +1,25 @@
+secretlist:
+  - name: ${webhook_channel}-url
+    value:
+      data:
+        address: "${webhook_address}"
+
+providerlist:
+  - name: ${webhook_type}
+    spec:
+      type: ${webhook_type}
+      channel: ${webhook_channel}
+      secretRef:
+        name: ${webhook_channel}-url
+      certSecretRef: {}
+
+alertlist:
+  - name: cluster-alerts
+    spec:
+      providerRef:
+        name: ${webhook_type}
+      eventSeverity: info
+      eventSources: ${alert_event_sources}
+      exclusionList:
+        - "waiting.*socket"
+        - "^Dependencies.*"

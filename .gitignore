@@ -1,0 +1,11 @@
+.idea
+
+.terraform
+terraform.tfstate*
+.terraform.lock.hcl
+
+*.pem
+*.crt
+*.key
+.DS_Store
+*.tgz
