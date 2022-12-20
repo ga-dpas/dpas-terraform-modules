@@ -16,7 +16,7 @@ module "s3_gateway_endpoint" {
         local.private_route_table_ids,
         local.public_route_table_ids,
       ])
-      tags = { Name = "s3-gateway-vpc-endpoint" }
+      tags = { Name = "${var.cluster_id}-s3-gateway-vpc-endpoint" }
     }
   }
 
