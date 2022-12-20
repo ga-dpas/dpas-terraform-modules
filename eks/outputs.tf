@@ -55,11 +55,3 @@ output "private_subnets" {
 output "database_subnets" {
   value = local.vpc_database_subnets
 }
-
-output "public_route_table_ids" {
-  value = local.public_route_table_ids
-}
-
-output "private_route_table_ids" {
-  value = local.private_route_table_ids
-}

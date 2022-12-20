@@ -98,28 +98,10 @@ variable "database_subnet_cidrs" {
   default     = []
 }
 
-variable "enable_vpc_endpoints" {
+variable "enable_vpc_s3_endpoint" {
   type        = bool
-  description = "Determines whether to creates VPC endpoint resources. Default is set to 'false'"
+  description = "Determines whether to creates VPC S3 gateway endpoint resource. Default is set to 'false'"
   default     = false
-}
-
-variable "vpc_endpoints" {
-  type        = any
-  description = "A map of interface and/or gateway endpoints containing their properties and configurations. Default will create S3 gateway endpoint if 'enable_vpc_endpoints = true'"
-  default     = {}
-}
-
-variable "public_route_table_ids" {
-  type        = list(string)
-  description = "List of public_route_table_ids for supplied VPC. Requires if 'create_vpc = false' but 'enable_vpc_s3_endpoint = true'"
-  default     = []
-}
-
-variable "private_route_table_ids" {
-  type        = list(string)
-  description = "List of private_route_table_ids for supplied VPC. Requires if 'create_vpc = false' but 'enable_vpc_s3_endpoint = true'"
-  default     = []
 }
 
 variable "admin_access_CIDRs" {

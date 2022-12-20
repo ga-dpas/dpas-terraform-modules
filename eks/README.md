@@ -21,8 +21,8 @@ Terraform module designed to provision an EKS cluster on AWS.
 The module provisions the following resources:
 
 - Creates AWS EKS cluster in a VPC with subnets
-- (Optionally) Creates VPC resources using [terraform-aws-vpc](https://github.com/terraform-aws-modules/terraform-aws-vpc) module with the default configuration and internet facing resources, _or_
-- (Optionally) Use a supplied VPC and subnets configured and _tagged_ as required by AWS EKS - see [VPC considerations](https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html) and the requirements on subnet tagging for the [Application load balancing on Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html)
+- (Optionally) Creates VPC with VPC S3 gateway endpoint using [terraform-aws-vpc](https://github.com/terraform-aws-modules/terraform-aws-vpc) module with the default configuration and internet facing resources, _or_
+- (Optionally) Supply VPC and subnets configuration as required by AWS EKS cluster setup - see [VPC considerations](https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html) and the requirements on subnet tagging for the [Application load balancing on Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html)
 
 ## Usage
 
@@ -99,10 +99,7 @@ module "dpas_eks" {
 | public_subnet_cidrs                    | List of public cidrs, for all available availability zones. Used by VPC module to set up public subnets. Requires if create_vpc = true                                                                 | list(string) |                []                 |    No    |
 | private_subnet_cidrs                   | List of private cidrs, for all available availability zones. Used by VPC module to set up private subnets. Requires if create_vpc = true                                                               | list(string) |                []                 |    No    |
 | database_subnet_cidrs                  | List of database cidrs, for all available availability zones. Used by VPC module to set up database subnets. Requires if create_vpc = true                                                             | list(string) |                []                 |    No    |
-| enable_vpc_endpoints                   | Determines whether to creates VPC endpoint resources. Default is set to 'false'                                                                                                                        |     bool     |               false               |    No    |
-| vpc_endpoints                          | A map of interface and/or gateway endpoints containing their properties and configurations. Default will create S3 gateway endpoint if 'enable_vpc_endpoints = true'                                   |     any      |                {}                 |    No    |
-| public_route_table_ids                 | List of public_route_table_ids for supplied VPC. Requires if create_vpc = false but enable_vpc_s3_endpoint = true                                                                                      | list(string) |                []                 |    No    |
-| private_route_table_ids                | List of private_route_table_ids for supplied VPC. Requires if create_vpc = false but enable_vpc_s3_endpoint = true                                                                                     | list(string) |                []                 |    No    |
+| enable_vpc_s3_endpoint                 | Determines whether to creates VPC S3 gateway endpoint resource. Default is set to 'false'                                                                                                              |     bool     |               false               |    No    |
 | admin_access_CIDRs                     | Locks ssh and api access to these IPs                                                                                                                                                                  | map(string)  |                {}                 |    No    |
 | ami_image_id                           | This variable can be used to deploy a patched / customised version of the Amazon EKS image                                                                                                             |    string    |                ""                 |    No    |
 | default_worker_instance_type           | The default nodegroup worker instance type that the cluster nodes core components will run                                                                                                             |    string    |            m6g.medium             |    No    |
@@ -140,5 +137,3 @@ module "dpas_eks" {
 | vpc_id                  | EKS cluster VPC ID                                      | false     |
 | private_subnets         | List of private subnets                                 | false     |
 | database_subnets        | List of database subnets                                | false     |
-| public_route_table_ids  | Public subnet route table ids                           | false     |
-| private_route_table_ids | Private subnet route table ids                          | false     |
