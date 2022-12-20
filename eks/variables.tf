@@ -57,13 +57,19 @@ variable "create_vpc" {
 ## Create VPC = false
 variable "vpc_id" {
   type        = string
-  description = "ID of the VPC to place EKS in. Use if 'create_vpc = false'"
+  description = "ID of the VPC to place EKS cluster. Use if 'create_vpc = false'"
   default     = ""
 }
 
 variable "private_subnets" {
   type        = list(string)
-  description = "List of private subnets to use for EKS cluster setup. Requires if 'create_vpc = false'"
+  description = "List of private subnets to use for EKS cluster. Requires if 'create_vpc = false'"
+  default     = []
+}
+
+variable "database_subnets" {
+  type        = list(string)
+  description = "A list of database subnets to use for database cluster. Requires if 'create_vpc = false'"
   default     = []
 }
 
