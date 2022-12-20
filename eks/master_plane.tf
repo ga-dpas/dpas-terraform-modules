@@ -6,7 +6,7 @@ resource "aws_eks_cluster" "eks" {
 
   vpc_config {
     security_group_ids = [aws_security_group.eks_cluster.id]
-    subnet_ids         = var.create_vpc ? module.vpc[0].private_subnets : var.private_subnets
+    subnet_ids         = local.vpc_private_subnets
   }
 
   depends_on = [

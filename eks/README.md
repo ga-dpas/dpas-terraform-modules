@@ -21,8 +21,8 @@ Terraform module designed to provision an EKS cluster on AWS.
 The module provisions the following resources:
 
 - Creates AWS EKS cluster in a VPC with subnets
-- (Optionally) Creates VPC resources using [terraform-aws-vpc](https://github.com/terraform-aws-modules/terraform-aws-vpc) module with the default configuration and internet facing resources, _or_
-- (Optionally) Use a supplied VPC and subnets configured and _tagged_ as required by AWS EKS - see [VPC considerations](https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html) and the requirements on subnet tagging for the [Application load balancing on Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html)
+- (Optionally) Creates VPC with VPC S3 gateway endpoint using [terraform-aws-vpc](https://github.com/terraform-aws-modules/terraform-aws-vpc) module with the default configuration and internet facing resources, _or_
+- (Optionally) Supply VPC and subnets configuration as required by AWS EKS cluster setup - see [VPC considerations](https://docs.aws.amazon.com/eks/latest/userguide/network_reqs.html) and the requirements on subnet tagging for the [Application load balancing on Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html)
 
 ## Usage
 
@@ -92,13 +92,14 @@ module "dpas_eks" {
 | cloudwatch_log_group_kms_key_id        | If a KMS Key ARN is set, this key will be used to encrypt the corresponding log group                                                                                                                  |    string    |               null                |    No    |
 | cluster_addons                         | Map of cluster addon configurations to enable for the cluster. Addon name can be the map keys or set with `name`                                                                                       | map(string)  |                {}                 |    No    |
 | create_vpc                             | Determines whether to create the VPC and subnets or to supply them. If supplied then subnets and tagging must be configured correctly for AWS EKS use - see AWS EKS VPC requirements documentation     |     bool     |               false               |    No    |
-| enable_vpc_s3_endpoint                 | Determines whether to provision an S3 gateway endpoint to the VPC. Default is set to 'true'                                                                                                            |     bool     |               false               |    No    |
-| vpc_id                                 | ID of the VPC to place EKS in. Use if create_vpc=false                                                                                                                                                 |    string    |                                   |    No    |
-| private_subnets                        | List of private subnets to use if create_vpc = false                                                                                                                                                   |    string    |                []                 |    No    |
-| vpc_cidr                               | The network CIDR you wish to use for the VPC module subnets. Default is set to 10.0.0.0/16 for most use-cases. Requires create_vpc = true                                                              |    string    |           "10.0.0.0/16"           |    No    |
-| public_subnet_cidrs                    | List of public cidrs, for all available availability zones. Used by VPC module to set up public subnets. Requires create_vpc = true                                                                    | list(string) |                []                 |    No    |
-| private_subnet_cidrs                   | List of private cidrs, for all available availability zones. Used by VPC module to set up private subnets. Requires create_vpc = true                                                                  | list(string) |                []                 |    No    |
-| database_subnet_cidrs                  | List of database cidrs, for all available availability zones. Used by VPC module to set up database subnets. Requires create_vpc = true                                                                | list(string) |                []                 |    No    |
+| vpc_id                                 | ID of the VPC to place EKS cluster in. Use if create_vpc=false                                                                                                                                         |    string    |                                   |    No    |
+| private_subnets                        | List of private subnets to use for EKS cluster setup. Requires if create_vpc = false                                                                                                                   |    string    |                []                 |    No    |
+| database_subnets                       | List of database subnets to use for database cluster setup. Requires if create_vpc = false                                                                                                             |    string    |                []                 |    No    |
+| vpc_cidr                               | The network CIDR you wish to use for the VPC module subnets. Default is set to 10.0.0.0/16 for most use-cases. Requires if create_vpc = true                                                           |    string    |           "10.0.0.0/16"           |    No    |
+| public_subnet_cidrs                    | List of public cidrs, for all available availability zones. Used by VPC module to set up public subnets. Requires if create_vpc = true                                                                 | list(string) |                []                 |    No    |
+| private_subnet_cidrs                   | List of private cidrs, for all available availability zones. Used by VPC module to set up private subnets. Requires if create_vpc = true                                                               | list(string) |                []                 |    No    |
+| database_subnet_cidrs                  | List of database cidrs, for all available availability zones. Used by VPC module to set up database subnets. Requires if create_vpc = true                                                             | list(string) |                []                 |    No    |
+| enable_vpc_s3_endpoint                 | Determines whether to creates VPC S3 gateway endpoint resource. Default is set to 'false'                                                                                                              |     bool     |               false               |    No    |
 | admin_access_CIDRs                     | Locks ssh and api access to these IPs                                                                                                                                                                  | map(string)  |                {}                 |    No    |
 | ami_image_id                           | This variable can be used to deploy a patched / customised version of the Amazon EKS image                                                                                                             |    string    |                ""                 |    No    |
 | default_worker_instance_type           | The default nodegroup worker instance type that the cluster nodes core components will run                                                                                                             |    string    |            m6g.medium             |    No    |
@@ -121,19 +122,18 @@ module "dpas_eks" {
 | custom_oidc_thumbprints                | Additional list of server certificate thumbprints for the OpenID Connect (OIDC) identity provider's server certificate(s)                                                                              | list(string) |                []                 |    No    |
 
 ### Outputs
-| Name                   | Description                                             | Sensitive |
-|------------------------|---------------------------------------------------------|-----------|
-| cluster_id             | EKS cluster ID                                          | false     |
-| cluster_version        | EKS cluster version                                     | false     |
-| ami_image_id           | AMI ID used for worker EC2 instance node group          | false     |
-| node_instance_profile  | EC2 instance profile for EKS work node group            | false     |
-| node_security_group    | security group for EKS work node group                  | false     |
-| node_role_arn          | IAM role ARN for EKS work node group                    | false     |
-| node_role_name         | IAM role name for EKS work node group                   | false     |
-| node_asg_name          | EKS work node group name                                | false     |
-| oidc_arn               | EKS cluster OpenID Connect (OIDC) identity provider ARN | false     |
-| oidc_url               | EKS cluster OpenID Connect (OIDC) identity provider URL | false     |
-| vpc_id                 | EKS cluster VPC ID                                      | false     |
-| database_subnets       | List of database subnets                                | false     |
-| private_subnets        | List of private subnets                                 | false     |
-| public_route_table_ids | Public subnet route table ids                           | false     |
+| Name                    | Description                                             | Sensitive |
+|-------------------------|---------------------------------------------------------|-----------|
+| cluster_id              | EKS cluster ID                                          | false     |
+| cluster_version         | EKS cluster version                                     | false     |
+| ami_image_id            | AMI ID used for worker EC2 instance node group          | false     |
+| node_instance_profile   | EC2 instance profile for EKS work node group            | false     |
+| node_security_group     | security group for EKS work node group                  | false     |
+| node_role_arn           | IAM role ARN for EKS work node group                    | false     |
+| node_role_name          | IAM role name for EKS work node group                   | false     |
+| node_asg_name           | EKS work node group name                                | false     |
+| oidc_arn                | EKS cluster OpenID Connect (OIDC) identity provider ARN | false     |
+| oidc_url                | EKS cluster OpenID Connect (OIDC) identity provider URL | false     |
+| vpc_id                  | EKS cluster VPC ID                                      | false     |
+| private_subnets         | List of private subnets                                 | false     |
+| database_subnets        | List of database subnets                                | false     |
