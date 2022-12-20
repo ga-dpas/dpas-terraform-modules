@@ -1,5 +1,6 @@
 resource "kubectl_manifest" "karpenter_provisioner_default_ondemand" {
   count = local.enable_karpenter ? 1 : 0
+
   yaml_body = <<-YAML
     apiVersion: karpenter.sh/v1alpha5
     kind: Provisioner

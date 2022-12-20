@@ -63,7 +63,7 @@ variable "vpc_id" {
 
 variable "private_subnets" {
   type        = list(string)
-  description = "List of private subnets to use if 'create_vpc = false'"
+  description = "List of private subnets to use for EKS cluster setup. Requires if 'create_vpc = false'"
   default     = []
 }
 
@@ -75,27 +75,45 @@ variable "vpc_cidr" {
 }
 
 variable "public_subnet_cidrs" {
-  description = "List of public cidrs, for all available availability zones. Used by VPC module to set up public subnets. Requires 'create_vpc = true'. Example: ['10.0.0.0/22', '10.0.4.0/22', '10.0.8.0/22']"
+  description = "List of public cidrs, for all available availability zones. Used by VPC module to set up public subnets. Requires if 'create_vpc = true'. Example: ['10.0.0.0/22', '10.0.4.0/22', '10.0.8.0/22']"
   type        = list(string)
   default     = []
 }
 
 variable "private_subnet_cidrs" {
-  description = "List of private cidrs, for all available availability zones. Used by VPC module to set up private subnets. Requires 'create_vpc = true'. Example: ['10.0.32.0/19', 10.0.64.0/19', '10.0.96.0/19']"
+  description = "List of private cidrs, for all available availability zones. Used by VPC module to set up private subnets. Requires if 'create_vpc = true'. Example: ['10.0.32.0/19', 10.0.64.0/19', '10.0.96.0/19']"
   type        = list(string)
   default     = []
 }
 
 variable "database_subnet_cidrs" {
-  description = "List of database cidrs, for all available availability zones. Used by VPC module to set up database subnets. Requires 'create_vpc = true'. Example: ['10.0.20.0/22', '10.0.24.0/22', '10.0.28.0/22']"
+  description = "List of database cidrs, for all available availability zones. Used by VPC module to set up database subnets. Requires if 'create_vpc = true'. Example: ['10.0.20.0/22', '10.0.24.0/22', '10.0.28.0/22']"
   type        = list(string)
   default     = []
 }
 
-variable "enable_vpc_s3_endpoint" {
+variable "enable_vpc_endpoints" {
   type        = bool
-  description = "Determines whether to provision an S3 endpoint to the VPC. Default is set to 'true'"
+  description = "Determines whether to creates VPC endpoint resources. Default is set to 'false'"
   default     = false
+}
+
+variable "vpc_endpoints" {
+  type        = any
+  description = "A map of interface and/or gateway endpoints containing their properties and configurations. Default will create S3 gateway endpoint if 'enable_vpc_endpoints = true'"
+  default     = {}
+}
+
+variable "public_route_table_ids" {
+  type        = list(string)
+  description = "List of public_route_table_ids for supplied VPC. Requires if 'create_vpc = false' but 'enable_vpc_s3_endpoint = true'"
+  default     = []
+}
+
+variable "private_route_table_ids" {
+  type        = list(string)
+  description = "List of private_route_table_ids for supplied VPC. Requires if 'create_vpc = false' but 'enable_vpc_s3_endpoint = true'"
+  default     = []
 }
 
 variable "admin_access_CIDRs" {

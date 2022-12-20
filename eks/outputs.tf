@@ -48,14 +48,14 @@ output "vpc_id" {
   value = local.vpc_id
 }
 
-output "database_subnets" {
-  value = var.create_vpc ? module.vpc[0].database_subnets : []
-}
-
 output "private_subnets" {
-  value = var.create_vpc ? module.vpc[0].private_subnets : []
+  value = local.vpc_private_subnets
 }
 
 output "public_route_table_ids" {
-  value = var.create_vpc ? module.vpc[0].public_route_table_ids : []
+  value = local.public_route_table_ids
+}
+
+output "private_route_table_ids" {
+  value = local.private_route_table_ids
 }
