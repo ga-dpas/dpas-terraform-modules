@@ -98,6 +98,18 @@ variable "database_subnet_cidrs" {
   default     = []
 }
 
+variable "create_database_subnet_group" {
+  description = "Determines whether to create database subnet group. Requires if 'create_vpc = true'"
+  type        = bool
+  default     = true
+}
+
+variable "database_subnet_group_name" {
+  description = "Name of database subnet group. Default will be set to vpc name if not provided. Requires if 'create_vpc = true'"
+  type        = string
+  default     = null
+}
+
 variable "enable_vpc_s3_endpoint" {
   type        = bool
   description = "Determines whether to creates VPC S3 gateway endpoint resource. Default is set to 'false'"
