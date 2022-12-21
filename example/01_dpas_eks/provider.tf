@@ -21,6 +21,12 @@ provider "helm" {
     cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
     token                  = data.aws_eks_cluster_auth.cluster.token
   }
+
+  registry {
+    url      = "oci://public.ecr.aws"
+    username = data.aws_ecrpublic_authorization_token.token.user_name
+    password = data.aws_ecrpublic_authorization_token.token.password
+  }
 }
 
 provider "kubectl" {
