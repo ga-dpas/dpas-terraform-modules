@@ -32,8 +32,10 @@ module "vpc" {
   enable_dns_hostnames = true
   enable_dns_support   = true
 
-  enable_nat_gateway           = true
-  create_database_subnet_group = true
+  enable_nat_gateway = true
+
+  create_database_subnet_group = var.create_database_subnet_group
+  database_subnet_group_name   = var.database_subnet_group_name
 
   tags = merge(
     {
