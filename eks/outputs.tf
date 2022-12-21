@@ -37,11 +37,11 @@ output "node_asg_name" {
 }
 
 output "oidc_arn" {
-  value = var.enable_irsa ? aws_iam_openid_connect_provider.oidc_provider.0.arn : null
+  value = try(aws_iam_openid_connect_provider.oidc_provider.0.arn, null)
 }
 
 output "oidc_url" {
-  value = var.enable_irsa ? aws_iam_openid_connect_provider.oidc_provider.0.url : null
+  value = try(aws_iam_openid_connect_provider.oidc_provider.0.url, null)
 }
 
 output "vpc_id" {
