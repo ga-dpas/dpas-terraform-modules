@@ -109,6 +109,10 @@ module "dpas_eks_cluster" {
   extra_userdata               = local.extra_userdata
   extra_bootstrap_args         = local.extra_bootstrap_args
   extra_node_labels            = local.extra_node_labels
+  # We are using the IRSA created above for vpc-cni permissions
+  # However, we have to provision a new cluster with the policy attached FIRST before we can disable.
+  # Without this initial policy, the VPC CNI fails to assign IPs and nodes cannot join the new cluster
+  iam_role_attach_cni_policy = true
 
   cluster_addons = {
     coredns = {

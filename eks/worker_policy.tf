@@ -33,6 +33,7 @@ resource "aws_iam_role_policy_attachment" "eks_node_AmazonEKSWorkerNodePolicy" {
 }
 
 resource "aws_iam_role_policy_attachment" "eks_node_AmazonEKS_CNI_Policy" {
+  count      = var.iam_role_attach_cni_policy ? 1 : 0
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
   role       = aws_iam_role.eks_node.name
 }

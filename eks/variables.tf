@@ -218,6 +218,12 @@ variable "extra_node_labels" {
   default     = ""
 }
 
+variable "iam_role_attach_cni_policy" {
+  description = "Whether to attach the `AmazonEKS_CNI_Policy` IAM policy to the worker IAM role. WARNING: If set `false` the permissions must be assigned to the `aws-node` DaemonSet pods via another method or nodes will not be able to join the cluster"
+  type        = bool
+  default     = true
+}
+
 #--------------------------------------------------------------
 # Tags
 #--------------------------------------------------------------
