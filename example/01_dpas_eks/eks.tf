@@ -16,6 +16,58 @@ locals {
   )
 }
 
+########################################################
+# VPC CNI Policy
+########################################################
+data "aws_iam_policy_document" "vpc_cni" {
+  # NOTE: Needed a same permission as AmazonEKS_CNI_Policy AWS managed IAM policy
+  statement {
+    sid = "IPV4"
+    actions = [
+      "ec2:AssignPrivateIpAddresses",
+      "ec2:AttachNetworkInterface",
+      "ec2:CreateNetworkInterface",
+      "ec2:DeleteNetworkInterface",
+      "ec2:DescribeInstances",
+      "ec2:DescribeTags",
+      "ec2:DescribeNetworkInterfaces",
+      "ec2:DescribeInstanceTypes",
+      "ec2:DetachNetworkInterface",
+      "ec2:ModifyNetworkInterfaceAttribute",
+      "ec2:UnassignPrivateIpAddresses",
+    ]
+    resources = ["*"]
+  }
+
+  statement {
+    sid       = "CreateTags"
+    actions   = ["ec2:CreateTags"]
+    resources = ["arn:${local.partition}:ec2:*:*:network-interface/*"]
+  }
+}
+
+module "role_vpc_cni" {
+  source = "git@github.com:ga-scr/dpas-terraform-modules.git//k8s_service_account_role?ref=main"
+
+  # Default Tags
+  owner       = local.owner
+  namespace   = local.namespace
+  environment = local.environment
+
+  oidc_arn = module.dpas_eks_cluster.oidc_arn
+  oidc_url = module.dpas_eks_cluster.oidc_url
+
+  # Additional Tags
+  tags = local.tags
+
+  service_account_role = {
+    name                      = "svc-${local.cluster_id}-vpc-cni"
+    service_account_namespace = "kube-system"
+    service_account_name      = "aws-node"
+    policy                    = data.aws_iam_policy_document.vpc_cni.json
+  }
+}
+
 module "dpas_eks_cluster" {
   source = "../../eks"
 
@@ -68,8 +120,13 @@ module "dpas_eks_cluster" {
       addon_version     = local.kube_proxy_version
     }
     vpc-cni = {
+      resolve_conflicts        = "OVERWRITE"
+      addon_version            = local.cni_version
+      service_account_role_arn = module.role_vpc_cni.role_arn
+    }
+    aws-ebs-csi-driver = {
       resolve_conflicts = "OVERWRITE"
-      addon_version     = local.cni_version
+      addon_version     = local.aws_ebs_csi_driver_version
     }
   }
 

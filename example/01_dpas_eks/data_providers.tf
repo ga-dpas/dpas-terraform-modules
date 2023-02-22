@@ -10,6 +10,7 @@ module "cluster_label" {
 data "aws_availability_zones" "available" {}
 data "aws_caller_identity" "current" {}
 data "aws_canonical_user_id" "current" {}
+data "aws_partition" "current" {}
 data "aws_ecrpublic_authorization_token" "token" {
   provider = aws.virginia
 }
@@ -26,8 +27,9 @@ locals {
   namespace   = "dpas"
   environment = "sandbox"
 
-  cluster_version = 1.23
+  cluster_version = 1.24
   cluster_id      = module.cluster_label.id
+  partition       = data.aws_partition.current.partition
 
   # VPC
   enable_s3_endpoint    = true
@@ -38,9 +40,10 @@ locals {
   database_subnet_cidrs = ["10.35.20.0/22", "10.35.24.0/22", "10.35.28.0/22"]
 
   # EKS add-ons
-  cni_version        = "v1.11.3-eksbuild.1"
-  kube_proxy_version = "v1.23.7-eksbuild.1"
-  core_dns_version   = "v1.8.7-eksbuild.2"
+  cni_version                = "v1.11.4-eksbuild.1"
+  kube_proxy_version         = "v1.24.7-eksbuild.2"
+  core_dns_version           = "v1.8.7-eksbuild.3"
+  aws_ebs_csi_driver_version = "v1.15.0-eksbuild.1"
 
   # EKS Node
   default_worker_instance_type = "m5.xlarge"
@@ -102,9 +105,9 @@ locals {
   enable_flux2               = true
   flux2_namespace            = "flux-system"
   flux2_create_namespace     = true
-  flux2_version              = "1.5.1"
-  flux2_notification_version = "1.3.0"
-  flux2_sync_version         = "1.0.0"
+  flux2_version              = "2.5.1"
+  flux2_notification_version = "1.6.0"
+  flux2_sync_version         = "1.2.0"
 
   # provide organisation tags
   tags = {
