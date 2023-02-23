@@ -99,7 +99,7 @@ resource "aws_launch_template" "node" {
     for_each = var.metadata_options != {} ? [var.metadata_options] : []
     content {
       http_endpoint               = try(metadata_options.value.http_endpoint, "disabled")
-      http_put_response_hop_limit = try(metadata_options.value.http_put_response_hop_limit, 2)
+      http_put_response_hop_limit = try(metadata_options.value.http_put_response_hop_limit, 1)
       http_tokens                 = try(metadata_options.value.http_tokens, "optional")
       http_protocol_ipv6          = try(metadata_options.value.http_protocol_ipv6, "disabled")
       instance_metadata_tags      = try(metadata_options.value.instance_metadata_tags, "disabled")
