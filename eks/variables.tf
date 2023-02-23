@@ -192,6 +192,20 @@ variable "additional_block_device_mappings" {
   # }
 }
 
+variable "metadata_options" {
+  description = "The metadata options for the instances"
+  type        = any
+  default     = {}
+  # Example: block access to instance metadata
+  # metadata_options {
+  #   http_endpoint               = "enabled"
+  #   http_protocol_ipv6          = "disabled"
+  #   http_tokens                 = "required"
+  #   http_put_response_hop_limit = 1
+  #   instance_metadata_tags      = "enabled"
+  # }
+}
+
 variable "extra_userdata" {
   type        = string
   description = "Additional EC2 user data commands that will be passed to EKS nodes"
