@@ -1,7 +1,7 @@
 #!/bin/bash
 set -o xtrace
 # Get instance and ami id from the aws ec2 metadate endpoint
-%{if enable_imsv2~}
+%{if enable_imdsv2~}
 token=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 3600"`
 id=`curl -H "X-aws-ec2-metadata-token: $token" -v http://169.254.169.254/latest/meta-data/instance-id`
 ami=`curl -H "X-aws-ec2-metadata-token: $token" -v http://169.254.169.254/latest/meta-data/ami-id`
