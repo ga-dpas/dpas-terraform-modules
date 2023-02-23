@@ -193,10 +193,17 @@ variable "additional_block_device_mappings" {
 }
 
 variable "metadata_options" {
-  description = "The metadata options for the instances"
+  description = "The metadata options for the instance launch-template. This specifies the exposure of the Instance Metadata Service to worker nodes. Default is set to uses IMSv1"
   type        = any
-  default     = {}
-  # Example: block access to instance metadata
+  default = {
+    http_endpoint               = "enabled"
+    http_protocol_ipv6          = "disabled"
+    http_tokens                 = "required"
+    http_put_response_hop_limit = 1
+    instance_metadata_tags      = "disabled"
+  }
+  # NOTE: switch to IMSv2 (recommended option) for limiting access to instance metadata
+  ## Reference: https://aws.github.io/aws-eks-best-practices/security/docs/iam/#restrict-access-to-the-instance-profile-assigned-to-the-worker-node
   # metadata_options {
   #   http_endpoint               = "enabled"
   #   http_protocol_ipv6          = "disabled"

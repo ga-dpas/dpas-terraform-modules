@@ -29,6 +29,8 @@ data "template_file" "node_userdata" {
     extra_kubelet_args   = var.extra_kubelet_args
     extra_bootstrap_args = var.extra_bootstrap_args
     extra_node_labels    = var.extra_node_labels
+
+    enable_imsv2 = var.metadata_options.http_tokens == "required"
   }
 }
 
