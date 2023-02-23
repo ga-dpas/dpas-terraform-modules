@@ -29,6 +29,8 @@ data "template_file" "node_userdata" {
     extra_kubelet_args   = var.extra_kubelet_args
     extra_bootstrap_args = var.extra_bootstrap_args
     extra_node_labels    = var.extra_node_labels
+
+    enable_imsv2 = var.metadata_options.http_tokens == "required"
   }
 }
 
@@ -90,6 +92,17 @@ resource "aws_launch_template" "node" {
 
       no_device    = try(block_device_mappings.value.no_device, null)
       virtual_name = try(block_device_mappings.value.virtual_name, null)
+    }
+  }
+
+  dynamic "metadata_options" {
+    for_each = var.metadata_options != {} ? [var.metadata_options] : []
+    content {
+      http_endpoint               = try(metadata_options.value.http_endpoint, "disabled")
+      http_put_response_hop_limit = try(metadata_options.value.http_put_response_hop_limit, 1)
+      http_tokens                 = try(metadata_options.value.http_tokens, "optional")
+      http_protocol_ipv6          = try(metadata_options.value.http_protocol_ipv6, "disabled")
+      instance_metadata_tags      = try(metadata_options.value.instance_metadata_tags, "disabled")
     }
   }
 }

@@ -109,6 +109,12 @@ module "dpas_eks_cluster" {
   extra_userdata               = local.extra_userdata
   extra_bootstrap_args         = local.extra_bootstrap_args
   extra_node_labels            = local.extra_node_labels
+  metadata_options = {
+    http_endpoint               = "enabled"
+    http_put_response_hop_limit = 1
+    http_tokens                 = "required"
+    instance_metadata_tags      = "disabled"
+  }
   # We are using the IRSA created above for vpc-cni permissions
   # However, we have to provision a new cluster with the policy attached FIRST before we can disable.
   # Without this initial policy, the VPC CNI fails to assign IPs and nodes cannot join the new cluster
