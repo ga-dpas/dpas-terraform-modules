@@ -18,7 +18,13 @@ variable "flux2_create_namespace" {
 variable "flux2_node_affinity" {
   type        = any
   description = "Kubernetes node affinity configuration to constrain flux2 components can be scheduled on"
-  default     = {}
+  default     = { "podAntiAffinity" : { "requiredDuringSchedulingIgnoredDuringExecution" : [{ "topologyKey" : "kubernetes.io/hostname" }] } }
+}
+
+variable "flux2_node_selector" {
+  type        = any
+  description = "Kubernetes node selector configuration to constrain flux2 components can be scheduled on"
+  default     = { "kubernetes.io/os" : "linux" }
 }
 
 variable "flux2_version" {

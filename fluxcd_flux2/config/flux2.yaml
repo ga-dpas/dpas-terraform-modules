@@ -1,10 +1,14 @@
 helmcontroller:
   create: true
   affinity: ${node_affinity}
+  nodeSelector:
+    ${node_selector}
 
 imageautomationcontroller:
   create: true
   affinity: ${node_affinity}
+  nodeSelector:
+    ${node_selector}
 
 imagereflectorcontroller:
   create: true
@@ -12,15 +16,19 @@ imagereflectorcontroller:
     additionalargs:
     - --aws-autologin-for-ecr
   affinity: ${node_affinity}
+  nodeSelector: ${node_selector}
 
 kustomizecontroller:
   create: true
   affinity: ${node_affinity}
+  nodeSelector: ${node_selector}
 
 notificationcontroller:
   create: true
   affinity: ${node_affinity}
+  nodeSelector: ${node_selector}
 
 sourcecontroller:
   create: true
   affinity: ${node_affinity}
+  nodeSelector: ${node_selector}

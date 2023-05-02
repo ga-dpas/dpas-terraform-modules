@@ -59,6 +59,7 @@ resource "helm_release" "flux2" {
   values = [
     templatefile("${path.module}/config/flux2.yaml", {
       node_affinity = jsonencode(var.flux2_node_affinity)
+      node_selector = jsonencode(var.flux2_node_selector)
     })
   ]
 }
