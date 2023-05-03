@@ -1,16 +1,14 @@
-helmcontroller:
+helmController:
   create: true
   affinity: ${node_affinity}
-  nodeSelector:
-    ${node_selector}
+  nodeSelector: ${node_selector}
 
-imageautomationcontroller:
+imageAutomationController:
   create: true
   affinity: ${node_affinity}
-  nodeSelector:
-    ${node_selector}
+  nodeSelector: ${node_selector}
 
-imagereflectorcontroller:
+imageReflectionController:
   create: true
   container:
     additionalargs:
@@ -18,17 +16,17 @@ imagereflectorcontroller:
   affinity: ${node_affinity}
   nodeSelector: ${node_selector}
 
-kustomizecontroller:
+kustomizeController:
   create: true
   affinity: ${node_affinity}
   nodeSelector: ${node_selector}
 
-notificationcontroller:
+notificationController:
   create: true
   affinity: ${node_affinity}
   nodeSelector: ${node_selector}
 
-sourcecontroller:
+sourceController:
   create: true
   affinity: ${node_affinity}
   nodeSelector: ${node_selector}
