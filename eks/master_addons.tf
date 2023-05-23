@@ -7,6 +7,7 @@ resource "aws_eks_addon" "eks_addons" {
   addon_version            = lookup(each.value, "addon_version", null)
   resolve_conflicts        = lookup(each.value, "resolve_conflicts", null)
   service_account_role_arn = lookup(each.value, "service_account_role_arn", null)
+  configuration_values     = lookup(each.value, "configuration_values", null)
 
   depends_on = [
     aws_autoscaling_group.node,
