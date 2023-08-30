@@ -45,13 +45,17 @@ output "oidc_url" {
 }
 
 output "vpc_id" {
-  value = local.vpc_id
+  value = var.create_vpc ? module.vpc[0].vpc_id : local.vpc_id
 }
 
 output "private_subnets" {
-  value = local.vpc_private_subnets
+  value = var.create_vpc ? module.vpc[0].private_subnets : local.vpc_private_subnets
 }
 
 output "database_subnets" {
-  value = local.vpc_database_subnets
+  value = var.create_vpc ? module.vpc[0].database_subnets : local.vpc_database_subnets
+}
+
+output "database_subnet_group_name" {
+  value = var.create_vpc && var.create_database_subnet_group ? module.vpc[0].database_subnet_group_name : null
 }
