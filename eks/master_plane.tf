@@ -5,8 +5,11 @@ resource "aws_eks_cluster" "eks" {
   enabled_cluster_log_types = var.cluster_enabled_log_types
 
   vpc_config {
-    security_group_ids = [aws_security_group.eks_cluster.id]
-    subnet_ids         = local.vpc_private_subnets
+    security_group_ids      = [aws_security_group.eks_cluster.id]
+    subnet_ids              = local.vpc_private_subnets
+    endpoint_private_access = var.cluster_endpoint_private_access
+    endpoint_public_access  = var.cluster_endpoint_public_access
+    public_access_cidrs     = var.cluster_endpoint_public_access_cidrs
   }
 
   depends_on = [
