@@ -2,7 +2,7 @@
 ##############################
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "v4.0.2"
+  version = "v5.0.0"
 
   count = var.create_vpc ? 1 : 0
 
