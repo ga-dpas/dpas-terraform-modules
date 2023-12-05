@@ -39,7 +39,6 @@ resource "aws_iam_role" "service_account_role" {
 }
 
 resource "aws_iam_role_policy" "service_account_role_policy" {
-  count  = var.service_account_role.policy != "" ? 1 : 0
   name   = var.service_account_role.name
   role   = aws_iam_role.service_account_role.id
   policy = var.service_account_role.policy
