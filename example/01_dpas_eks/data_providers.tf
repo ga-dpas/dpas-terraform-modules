@@ -20,6 +20,15 @@ data "aws_eks_cluster" "cluster" {
 data "aws_eks_cluster_auth" "cluster" {
   name = module.dpas_eks_cluster.cluster_id
 }
+data "aws_ami" "cluster_ami" {
+  filter {
+    name   = "name"
+    values = ["amazon-eks-arm64-node-${local.cluster_version}-v*"]
+  }
+
+  most_recent = true
+  owners      = ["602401143452"] # Amazon EKS AMI Account ID
+}
 
 locals {
   region      = "ap-southeast-2"
@@ -27,9 +36,11 @@ locals {
   namespace   = "dpas"
   environment = "sandbox"
 
-  cluster_version = 1.25
+  cluster_version = 1.26
   cluster_id      = module.cluster_label.id
-  partition       = data.aws_partition.current.partition
+
+  partition  = data.aws_partition.current.partition
+  dns_suffix = data.aws_partition.current.dns_suffix
 
   # VPC
   enable_s3_endpoint    = true
@@ -40,18 +51,26 @@ locals {
   database_subnet_cidrs = ["10.35.20.0/22", "10.35.24.0/22", "10.35.28.0/22"]
 
   # EKS add-ons
-  cni_version                = "v1.12.6-eksbuild.2"
-  kube_proxy_version         = "v1.25.11-eksbuild.1"
-  core_dns_version           = "v1.9.3-eksbuild.5"
-  aws_ebs_csi_driver_version = "v1.20.0-eksbuild.1"
+  cni_version                = "v1.15.4-eksbuild.1"
+  kube_proxy_version         = "v1.26.9-eksbuild.2"
+  core_dns_version           = "v1.9.3-eksbuild.10"
+  aws_ebs_csi_driver_version = "v1.25.0-eksbuild.1"
 
   # EKS Node
-  default_worker_instance_type = "m5.xlarge"
+  ami_image_id                 = data.aws_ami.cluster_ami.id
+  default_worker_instance_type = "m6g.xlarge"
   extra_bootstrap_args         = "--container-runtime containerd"
   # node labels - can be use for node affinity configurations
   default_node_group = "eks-default"
   default_node_type  = "ondemand"
   extra_node_labels  = "nodegroup=${local.default_node_group},nodetype=${local.default_node_type}"
+  # default node selector
+  node_selector = {
+    "nodegroup" : local.default_node_group,
+    "nodetype" : local.default_node_type,
+    "kubernetes.io/arch" : "arm64",
+    "kubernetes.io/os" : "linux"
+  }
   # instance userdata
   extra_userdata = <<-USERDATA
   REGION=${local.region}
@@ -98,7 +117,7 @@ locals {
   karpenter_namespace        = "karpenter"
   karpenter_create_namespace = true
   karpenter_release_name     = "karpenter"
-  karpenter_version          = "v0.28.0"
+  karpenter_version          = "v0.31.3"
 
   # Flux2
   enable_flux2               = true

@@ -1,0 +1,27 @@
+{
+  "controller": {
+    "nodeSelector": {"nodegroup":"cluster-default","nodetype":"ondemand"},
+    "resources": {
+      "limits": {
+        "cpu": "200m",
+        "memory": "256Mi"
+      },
+      "requests": {
+        "cpu": "100m",
+        "memory": "128Mi"
+      }
+    }
+  },
+  "node": {
+    "resources": {
+      "limits": {
+        "cpu": "200m",
+        "memory": "256Mi"
+      },
+      "requests": {
+        "cpu": "100m",
+        "memory": "128Mi"
+      }
+    }
+  }
+}

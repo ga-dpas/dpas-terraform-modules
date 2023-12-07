@@ -1,10 +1,28 @@
-clusterName: ${cluster_name}
-clusterEndpoint: ${cluster_endpoint}
-aws:
-  defaultInstanceProfile: ${instance_profile}
-#  interruptionQueueName: ${cluster_name}
+# -- Number of replicas
+replicas: 2
+# -- Node selectors to schedule the pod to nodes with labels
+nodeSelector: ${node_selector}
+# -- Affinity rules for scheduling the pod
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: karpenter.sh/provisioner-name
+              operator: DoesNotExist
+# -- Topology spread constraints to increase the controller resilience by distributing pods across the cluster zones
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: ScheduleAnyway
+# -- Global Settings to configure Karpenter
+settings:
+  aws:
+    defaultInstanceProfile: ${instance_profile}
+    clusterName: ${cluster_name}
+    clusterEndpoint: ${cluster_endpoint}
+    interruptionQueueName: ${interruption_queue_name}
 serviceAccount:
   create: true
   annotations:
     eks.amazonaws.com/role-arn: ${service_account_arn}
-affinity: ${node_affinity}

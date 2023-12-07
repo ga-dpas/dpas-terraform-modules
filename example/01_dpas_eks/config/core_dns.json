@@ -1,0 +1,17 @@
+{
+  "replicaCount": ${replica_count},
+  "nodeSelector": {
+    "kubernetes.io/os" : "linux",
+    "nodetype" : "ondemand"
+  },
+  "resources": {
+    "limits": {
+      "cpu": "200m",
+      "memory": "256Mi"
+    },
+    "requests": {
+      "cpu": "200m",
+      "memory": "256Mi"
+    }
+  }
+}
