@@ -143,13 +143,13 @@ resource "aws_sqs_queue" "interruption_queue" {
   message_retention_seconds = 300
   sqs_managed_sse_enabled   = true
   tags = merge(
-  {
-    name        = local.interruption_queue_name
-    owner       = local.owner
-    namespace   = local.namespace
-    environment = local.environment
-  },
-  local.tags
+    {
+      name        = local.interruption_queue_name
+      owner       = local.owner
+      namespace   = local.namespace
+      environment = local.environment
+    },
+    local.tags
   )
 }
 
@@ -189,10 +189,10 @@ resource "aws_cloudwatch_event_rule" "this" {
   event_pattern = jsonencode(each.value.event_pattern)
 
   tags = merge(
-  {
-    ClusterName : local.cluster_id
-  },
-  local.tags,
+    {
+      ClusterName : local.cluster_id
+    },
+    local.tags,
   )
 }
 
@@ -237,6 +237,3 @@ resource "helm_release" "karpenter" {
     module.role_karpenter_controller
   ]
 }
-
-
-

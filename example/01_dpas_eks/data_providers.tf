@@ -36,7 +36,7 @@ locals {
   namespace   = "dpas"
   environment = "sandbox"
 
-  cluster_version = 1.26
+  cluster_version = 1.27
   cluster_id      = module.cluster_label.id
 
   partition  = data.aws_partition.current.partition
@@ -52,18 +52,17 @@ locals {
 
   # EKS add-ons
   cni_version                = "v1.15.4-eksbuild.1"
-  kube_proxy_version         = "v1.26.9-eksbuild.2"
-  core_dns_version           = "v1.9.3-eksbuild.10"
+  kube_proxy_version         = "v1.27.6-eksbuild.2"
+  core_dns_version           = "v1.10.1-eksbuild.6"
   aws_ebs_csi_driver_version = "v1.25.0-eksbuild.1"
 
   # EKS Node
   ami_image_id                 = data.aws_ami.cluster_ami.id
   default_worker_instance_type = "m6g.xlarge"
-  extra_bootstrap_args         = "--container-runtime containerd"
+  default_node_group           = "eks-default"
+  default_node_type            = "ondemand"
   # node labels - can be use for node affinity configurations
-  default_node_group = "eks-default"
-  default_node_type  = "ondemand"
-  extra_node_labels  = "nodegroup=${local.default_node_group},nodetype=${local.default_node_type}"
+  extra_bootstrap_args = "--kubelet-extra-args '--node-labels=cluster=${local.cluster_id},ami-id=${local.ami_image_id},nodegroup=${local.default_node_group},nodetype=${local.default_node_type}'"
   # default node selector
   node_selector = {
     "nodegroup" : local.default_node_group,

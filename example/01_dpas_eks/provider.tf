@@ -3,7 +3,7 @@ provider "aws" {
   max_retries = 10
 }
 
-# Needed for aws public ECR
+# Needed to access public ECR
 provider "aws" {
   region = "us-east-1"
   alias  = "virginia"
@@ -27,12 +27,4 @@ provider "helm" {
     username = data.aws_ecrpublic_authorization_token.token.user_name
     password = data.aws_ecrpublic_authorization_token.token.password
   }
-}
-
-provider "kubectl" {
-  apply_retry_count      = 5
-  host                   = data.aws_eks_cluster.cluster.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
-  load_config_file       = false
-  token                  = data.aws_eks_cluster_auth.cluster.token
 }

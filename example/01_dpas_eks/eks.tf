@@ -309,12 +309,12 @@ locals {
 data "template_file" "core_dns_config" {
   template = file("${path.module}/config/core_dns.json")
   vars = {
-    replica_count = "2" # NOTE: adjust this property when running at scale
+    replica_count = "1" # NOTE: adjust this property when running at scale
   }
 }
 
 module "dpas_eks_cluster" {
-  source = "git@github.com:ga-scr/dpas-terraform-modules.git//eks?ref=main"
+  source = "../../eks"
 
   # Cluster config
   cluster_id      = local.cluster_id
@@ -355,9 +355,8 @@ module "dpas_eks_cluster" {
   default_worker_instance_type = local.default_worker_instance_type
   min_nodes                    = 1
   max_nodes                    = 2
-  extra_userdata               = local.extra_userdata
   extra_bootstrap_args         = local.extra_bootstrap_args
-  extra_node_labels            = local.extra_node_labels
+  extra_userdata               = local.extra_userdata
   # setting instance to use IMDSv2
   ## Refer: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html
   metadata_options = {
