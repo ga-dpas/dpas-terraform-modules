@@ -59,9 +59,9 @@ locals {
   # EKS Node
   ami_image_id                 = data.aws_ami.cluster_ami.id
   default_worker_instance_type = "m6g.xlarge"
-  default_node_group           = "eks-default"
-  default_node_type            = "ondemand"
   # node labels - can be use for node affinity configurations
+  default_node_group   = "eks-default"
+  default_node_type    = "ondemand"
   extra_bootstrap_args = "--kubelet-extra-args '--node-labels=cluster=${local.cluster_id},ami-id=${local.ami_image_id},nodegroup=${local.default_node_group},nodetype=${local.default_node_type}'"
   # default node selector
   node_selector = {
