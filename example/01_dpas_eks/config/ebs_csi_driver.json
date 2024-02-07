@@ -1,6 +1,5 @@
 {
   "controller": {
-    "nodeSelector": {"nodegroup":"cluster-default","nodetype":"ondemand"},
     "resources": {
       "limits": {
         "cpu": "200m",
