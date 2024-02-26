@@ -11,6 +11,7 @@ data "aws_availability_zones" "available" {}
 data "aws_caller_identity" "current" {}
 data "aws_canonical_user_id" "current" {}
 data "aws_partition" "current" {}
+data "aws_region" "current" {}
 data "aws_ecrpublic_authorization_token" "token" {
   provider = aws.virginia
 }
@@ -112,11 +113,10 @@ locals {
   }
 
   # Karpenter
-  enable_karpenter           = true
   karpenter_namespace        = "karpenter"
   karpenter_create_namespace = true
   karpenter_release_name     = "karpenter"
-  karpenter_version          = "v0.31.3"
+  karpenter_version          = "v0.32.1"
 
   # Flux2
   enable_flux2               = true

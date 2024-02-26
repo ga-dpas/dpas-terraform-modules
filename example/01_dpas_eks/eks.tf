@@ -353,7 +353,7 @@ module "dpas_eks_cluster" {
   # so that Karpenter can be deployed and start managing compute capacity as required
   ami_image_id                 = local.ami_image_id
   default_worker_instance_type = local.default_worker_instance_type
-  min_nodes                    = 1
+  min_nodes                    = 2
   max_nodes                    = 2
   extra_bootstrap_args         = local.extra_bootstrap_args
   extra_userdata               = local.extra_userdata
