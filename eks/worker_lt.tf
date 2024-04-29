@@ -26,9 +26,7 @@ data "template_file" "node_userdata" {
     certificate_authority = aws_eks_cluster.eks.certificate_authority.0.data
 
     extra_userdata       = var.extra_userdata
-    extra_kubelet_args   = var.extra_kubelet_args
     extra_bootstrap_args = var.extra_bootstrap_args
-    extra_node_labels    = var.extra_node_labels
 
     enable_imdsv2 = var.metadata_options.http_tokens == "required"
   }

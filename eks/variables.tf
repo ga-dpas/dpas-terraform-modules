@@ -231,30 +231,18 @@ variable "metadata_options" {
   # }
 }
 
-variable "extra_userdata" {
-  type        = string
-  description = "Additional EC2 user data commands that will be passed to EKS nodes"
-  default     = <<-USERDATA
-  echo ""
-  USERDATA
-}
-
-variable "extra_kubelet_args" {
-  type        = string
-  description = "Additional kubelet command-line arguments (e.g. '--arg1=value --arg2')"
-  default     = ""
-}
-
 variable "extra_bootstrap_args" {
   type        = string
   description = "Additional bootstrap.sh command-line arguments (e.g. '--arg1=value --arg2')"
   default     = ""
 }
 
-variable "extra_node_labels" {
+variable "extra_userdata" {
   type        = string
-  description = "Additional node labels e.g. 'label1=value1,label2=value2'"
-  default     = ""
+  description = "Additional EC2 user data commands that will be passed to EKS nodes"
+  default     = <<-USERDATA
+  echo ""
+  USERDATA
 }
 
 variable "iam_role_attach_cni_policy" {
