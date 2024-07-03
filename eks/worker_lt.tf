@@ -13,30 +13,23 @@ locals {
   ami_id = coalesce(var.ami_image_id, data.aws_ami.eks_worker.id)
 }
 
-# EKS currently documents this required userdata for EKS worker nodes to
-# properly configure Kubernetes applications on the EC2 instance.
-# We utilize a Terraform locals here to simplify Base64 encoding this
-# information into the AutoScaling Launch Template.
-# More information: https://docs.aws.amazon.com/eks/latest/userguide/launch-workers.html
-data "template_file" "node_userdata" {
-  template = file("${path.module}/worker_userdata.tpl.sh")
-  vars = {
-    cluster_id            = aws_eks_cluster.eks.id
-    endpoint              = aws_eks_cluster.eks.endpoint
-    certificate_authority = aws_eks_cluster.eks.certificate_authority.0.data
-
-    extra_userdata       = var.extra_userdata
-    extra_bootstrap_args = var.extra_bootstrap_args
-
-    enable_imdsv2 = var.metadata_options.http_tokens == "required"
-  }
-}
-
 resource "aws_launch_template" "node" {
   name_prefix   = "${var.cluster_id}-node-"
   image_id      = local.ami_id
-  user_data     = base64encode(data.template_file.node_userdata.rendered)
   instance_type = var.default_worker_instance_type
+
+  user_data = base64encode(templatefile("${path.module}/worker_userdata.tpl.sh",
+    {
+      cluster_id            = aws_eks_cluster.eks.id
+      endpoint              = aws_eks_cluster.eks.endpoint
+      certificate_authority = aws_eks_cluster.eks.certificate_authority.0.data
+
+      extra_userdata       = var.extra_userdata
+      extra_bootstrap_args = var.extra_bootstrap_args
+
+      enable_imdsv2 = var.metadata_options.http_tokens == "required"
+    }
+  ))
 
   iam_instance_profile {
     name = aws_iam_instance_profile.eks_node.id

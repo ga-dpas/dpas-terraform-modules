@@ -37,7 +37,7 @@ locals {
   namespace   = "dpas"
   environment = "sandbox"
 
-  cluster_version = 1.27
+  cluster_version = 1.28
   cluster_id      = module.cluster_label.id
 
   partition  = data.aws_partition.current.partition

@@ -306,13 +306,6 @@ locals {
   ebs_csi_driver_config = file("${path.module}/config/ebs_csi_driver.json")
 }
 
-data "template_file" "core_dns_config" {
-  template = file("${path.module}/config/core_dns.json")
-  vars = {
-    replica_count = "1" # NOTE: adjust this property when running at scale
-  }
-}
-
 module "dpas_eks_cluster" {
   source = "../../eks"
 
@@ -374,7 +367,7 @@ module "dpas_eks_cluster" {
     coredns = {
       resolve_conflicts    = "OVERWRITE"
       addon_version        = local.core_dns_version
-      configuration_values = data.template_file.core_dns_config.rendered
+      configuration_values = templatefile("${path.module}/config/core_dns.json", { replica_count = "1" })
     }
     kube-proxy = {
       resolve_conflicts    = "OVERWRITE"
