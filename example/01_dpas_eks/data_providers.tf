@@ -116,15 +116,15 @@ locals {
   karpenter_namespace        = "karpenter"
   karpenter_create_namespace = true
   karpenter_release_name     = "karpenter"
-  karpenter_version          = "v0.32.1"
+  karpenter_version          = "0.37.0"
 
   # Flux2
   enable_flux2               = true
   flux2_namespace            = "flux-system"
   flux2_create_namespace     = true
-  flux2_version              = "2.9.0"
-  flux2_notification_version = "1.10.0"
-  flux2_sync_version         = "1.6.0"
+  flux2_version              = "2.13.0"
+  flux2_notification_version = "1.15.0"
+  flux2_sync_version         = "1.9.0"
 
   # provide organisation tags
   tags = {
