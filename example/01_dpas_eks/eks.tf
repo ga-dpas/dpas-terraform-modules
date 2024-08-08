@@ -358,10 +358,8 @@ module "dpas_eks_cluster" {
     http_tokens                 = "required"
     instance_metadata_tags      = "disabled"
   }
-  # We are using the IRSA created above for vpc-cni permissions
-  # However, we have to provision a new cluster with the policy attached FIRST before we can disable.
-  # Without this initial policy, the VPC CNI fails to assign IPs and nodes cannot join the new cluster
-  iam_role_attach_cni_policy = true
+
+  iam_role_attach_cni_policy = false
 
   cluster_addons = {
     coredns = {

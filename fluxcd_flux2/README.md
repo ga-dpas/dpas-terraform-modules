@@ -1,4 +1,4 @@
-# Terraform Open Data Cube FluxCD Flux2 Installation
+# Terraform Module: FluxCD Flux2 Installation
 
 The purpose of this module is to set up [FluxCD](https://fluxcd.io/docs/) [Flux version 2](https://github.com/fluxcd/flux2)
 - a tool for keeping Kubernetes clusters in sync with sources of configuration (like Git repositories),

@@ -1,4 +1,4 @@
-# Terraform EKS Setup Module: eks
+# Terraform Module: eks
 
 Terraform module designed to provision an EKS cluster on AWS.
 
