@@ -37,9 +37,10 @@ locals {
   namespace   = "dpas"
   environment = "sandbox"
 
-  cluster_version = 1.28
+  cluster_version = 1.29
   cluster_id      = module.cluster_label.id
 
+  account_id = data.aws_caller_identity.current.account_id
   partition  = data.aws_partition.current.partition
   dns_suffix = data.aws_partition.current.dns_suffix
 
@@ -52,10 +53,10 @@ locals {
   database_subnet_cidrs = ["10.35.20.0/22", "10.35.24.0/22", "10.35.28.0/22"]
 
   # EKS add-ons
-  cni_version                = "v1.15.4-eksbuild.1"
-  kube_proxy_version         = "v1.27.6-eksbuild.2"
-  core_dns_version           = "v1.10.1-eksbuild.6"
-  aws_ebs_csi_driver_version = "v1.25.0-eksbuild.1"
+  cni_version                = "v1.18.3-eksbuild.1"
+  kube_proxy_version         = "v1.29.3-eksbuild.5"
+  core_dns_version           = "v1.11.1-eksbuild.11"
+  aws_ebs_csi_driver_version = "v1.29.1-eksbuild.1"
 
   # EKS Node
   ami_image_id                 = data.aws_ami.cluster_ami.id
@@ -63,7 +64,7 @@ locals {
   # node labels - can be use for node affinity configurations
   default_node_group   = "eks-default"
   default_node_type    = "ondemand"
-  extra_bootstrap_args = "--kubelet-extra-args '--node-labels=cluster=${local.cluster_id},ami-id=${local.ami_image_id},nodegroup=${local.default_node_group},nodetype=${local.default_node_type}'"
+  extra_bootstrap_args = "--kubelet-extra-args '--anonymous-auth=false --node-labels=cluster=${local.cluster_id},ami-id=${local.ami_image_id},nodegroup=${local.default_node_group},nodetype=${local.default_node_type}'"
   # default node selector
   node_selector = {
     "nodegroup" : local.default_node_group,
