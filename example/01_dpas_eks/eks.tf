@@ -317,7 +317,7 @@ module "dpas_eks_cluster" {
   create_cluster_cloudwatch_log_group = false
 
   cluster_endpoint_private_access = true
-  cluster_endpoint_public_access  = false  # NOTE: If disabled, control plane will be accessible only from the VPC or connected networks
+  cluster_endpoint_public_access  = false # NOTE: If disabled, control plane will be accessible only from the VPC or connected networks
 
   # Default Tags
   owner       = local.owner

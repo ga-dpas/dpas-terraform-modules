@@ -25,6 +25,12 @@ variable "attributes" {
   description = "Additional attributes (e.g. `region`)"
 }
 
+variable "data_bucket_object_ownership" {
+  type        = string
+  default     = "BucketOwnerEnforced"
+  description = "Specifies the S3 object ownership control. Expected value - `ObjectWriter`, `BucketOwnerPreferred`, or 'BucketOwnerEnforced'"
+}
+
 variable "tags" {
   type        = map(string)
   description = "Additional tags (e.g. `map('StackName','XYZ')`"

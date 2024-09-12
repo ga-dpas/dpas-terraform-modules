@@ -28,11 +28,6 @@ resource "aws_s3_bucket" "terraform_state_storage_s3" {
   tags = module.backend_label.tags
 }
 
-resource "aws_s3_bucket_acl" "terraform_state_storage_s3" {
-  bucket = aws_s3_bucket.terraform_state_storage_s3.id
-  acl    = "private"
-}
-
 resource "aws_s3_bucket_versioning" "terraform_state_storage_s3" {
   bucket = aws_s3_bucket.terraform_state_storage_s3.id
   versioning_configuration {
@@ -57,6 +52,15 @@ resource "aws_s3_bucket_public_access_block" "terraform_state_storage_s3" {
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
+}
+
+# bucket-level - object ownership control
+resource "aws_s3_bucket_ownership_controls" "terraform_state_storage_s3" {
+  bucket = aws_s3_bucket.terraform_state_storage_s3.id
+
+  rule {
+    object_ownership = var.data_bucket_object_ownership
+  }
 }
 
 # The terraform lock database resource
