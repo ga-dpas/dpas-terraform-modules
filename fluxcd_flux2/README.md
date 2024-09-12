@@ -8,7 +8,7 @@ and automating updates to configuration when there is new code to deploy.
 
 ```hcl-terraform
 module "fluxcd_flux2" {
-  source = "git@github.com:ga-scr/dpas-terraform-modules.git//fluxcd_flux2?ref=main"
+  source = "git@github.com:ga-dpas/dpas-terraform-modules.git//fluxcd_flux2?ref=main"
 
   cluster_id      = local.cluster_id
   
@@ -22,13 +22,13 @@ module "fluxcd_flux2" {
   flux2_sync_version         = local.flux2_sync_version
 
   # flux sync configurations
-  flux2_git_repo_url = "ssh://git@github.com/ga-scr/dpas-k8s-example-deployments"
+  flux2_git_repo_url = "ssh://git@github.com/ga-dpas/dpas-k8s-example-deployments"
   flux2_git_branch   = "main"
   flux2_git_path     = "workspaces/dpas"
 
   # flux notification configurations - e.g. slack channel
   flux2_webhook_url     = "<slack-url>"
-  flux2_webhook_channel = "scr-dpas-flux"
+  flux2_webhook_channel = "ga-dpas-flux"
   flux2_webhhok_type    = "slack"
 
   # notification events for alerting

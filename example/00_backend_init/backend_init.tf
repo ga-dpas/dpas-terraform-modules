@@ -1,6 +1,6 @@
 locals {
   region      = "ap-southeast-2"
-  owner       = "scr"
+  owner       = "ga"
   namespace   = "dpas"
   environment = "sandbox"
 }

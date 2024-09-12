@@ -26,12 +26,12 @@ The module provisions the following resources:
 
 ## Usage
 
-The complete terraform AWS example is provided for kick-start [here](https://github.com/ga-scr/dpas-terraform-modules/tree/master/examples).
+The complete terraform AWS example is provided for kick-start [here](https://github.com/ga-dpas/dpas-terraform-modules/tree/master/examples).
 Copy the example to create your own live repo to set up EKS infrastructure to run dpas processing in your own AWS account.
 
 ```terraform
 module "dpas_eks" {
-  source = "git@github.com:ga-scr/dpas-terraform-modules.git//eks?ref=main"
+  source = "git@github.com:ga-dpas/dpas-terraform-modules.git//eks?ref=main"
 
   # Cluster config
   cluster_id      = local.cluster_id

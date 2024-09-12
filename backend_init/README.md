@@ -14,7 +14,7 @@ The module provisions the following resource:
 
 ```hcl-terraform
 module "backend_init" {
-  source = "git@github.com:ga-scr/dpas-terraform-modules.git//backend_init?ref=main"
+  source = "git@github.com:ga-dpas/dpas-terraform-modules.git//backend_init?ref=main"
 
   owner       = local.owner
   namespace   = local.namespace

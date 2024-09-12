@@ -16,7 +16,7 @@ module "fluxcd_flux2" {
 
   # flux sync configurations
   # NOTE: Update as per your setup!
-  flux2_git_repo_url = "ssh://git@github.com/ga-scr/dpas-k8s-example-deployment"
+  flux2_git_repo_url = "ssh://git@github.com/ga-dpas/dpas-k8s-example-deployment"
   flux2_git_branch   = "main"
   flux2_git_path     = "workspaces/dpas-sandbox"
 

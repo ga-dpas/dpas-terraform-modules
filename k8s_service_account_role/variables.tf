@@ -1,6 +1,6 @@
 variable "owner" {
   type        = string
-  description = "The owner of the owner - e.g. scr"
+  description = "The owner of the owner - e.g. ga"
 }
 
 variable "namespace" {

@@ -109,7 +109,7 @@ data "aws_iam_policy_document" "vpc_cni" {
 }
 
 module "role_vpc_cni" {
-  source = "git@github.com:ga-scr/dpas-terraform-modules.git//k8s_service_account_role?ref=main"
+  source = "git@github.com:ga-dpas/dpas-terraform-modules.git//k8s_service_account_role?ref=main"
 
   # Default Tags
   owner       = local.owner
@@ -277,7 +277,7 @@ data "aws_iam_policy_document" "ebs_csi_driver" {
 }
 
 module "role_ebs_csi_driver" {
-  source = "git@github.com:ga-scr/dpas-terraform-modules.git//k8s_service_account_role?ref=main"
+  source = "git@github.com:ga-dpas/dpas-terraform-modules.git//k8s_service_account_role?ref=main"
 
   # Default Tags
   owner       = local.owner

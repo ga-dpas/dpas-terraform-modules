@@ -33,7 +33,7 @@ data "aws_ami" "cluster_ami" {
 
 locals {
   region      = "ap-southeast-2"
-  owner       = "scr"
+  owner       = "ga"
   namespace   = "dpas"
   environment = "sandbox"
 
@@ -75,7 +75,7 @@ locals {
   # instance userdata
   extra_userdata = <<-USERDATA
   REGION=${local.region}
-  EC2_NAME=SCR-DPAS-$HOSTNAME
+  EC2_NAME=GA-DPAS-$HOSTNAME
   ## Enable ssm-agent
   #########################
   sudo systemctl enable amazon-ssm-agent

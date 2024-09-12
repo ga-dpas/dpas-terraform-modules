@@ -16,7 +16,7 @@ First step is to provision service account role for k8s service account like -
 
 ```terraform
 module "svc_role_alb_controller" {
-  source = "git@github.com:ga-scr/dpas-terraform-modules.git//k8s_service_account_role?ref=main"
+  source = "git@github.com:ga-dpas/dpas-terraform-modules.git//k8s_service_account_role?ref=main"
 
   # Default Tags
   owner       = local.owner
@@ -100,7 +100,7 @@ spec:
 ### Inputs
 | Name                 | Description                                                                            |    Type     |       Default        | Required |
 |----------------------|----------------------------------------------------------------------------------------|:-----------:|:--------------------:|:--------:|
-| owner                | The owner of the owner - e.g. scr                                                      |   string    |                      |   Yes    |
+| owner                | The owner of the owner - e.g. ga                                                       |   string    |                      |   Yes    |
 | namespace            | The unique namespace for the environment, which could be branch abbreviation e.g. dpas |   string    |                      |   Yes    |
 | environment          | The name of the environment - e.g. dev, stage, prod                                    |   string    |                      |   Yes    |
 | oidc_arn             | The arn of the OpenId connect provider associated with this cluster                    |   string    |                      |   Yes    |

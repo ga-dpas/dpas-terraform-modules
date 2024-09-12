@@ -387,7 +387,7 @@ data "aws_iam_policy_document" "karpenter_controller_trust_policy" {
 }
 
 module "role_karpenter_controller" {
-  source = "git@github.com:ga-scr/dpas-terraform-modules.git//k8s_service_account_role?ref=main"
+  source = "git@github.com:ga-dpas/dpas-terraform-modules.git//k8s_service_account_role?ref=main"
 
   # Default Tags
   owner       = local.owner
