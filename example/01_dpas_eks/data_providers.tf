@@ -21,14 +21,8 @@ data "aws_eks_cluster" "cluster" {
 data "aws_eks_cluster_auth" "cluster" {
   name = module.dpas_eks_cluster.cluster_id
 }
-data "aws_ami" "cluster_ami" {
-  filter {
-    name   = "name"
-    values = ["amazon-eks-arm64-node-${local.cluster_version}-v*"]
-  }
-
-  most_recent = true
-  owners      = ["602401143452"] # Amazon EKS AMI Account ID
+data "aws_ssm_parameter" "al2023_ami" {
+  name = "/aws/service/eks/optimized-ami/${local.cluster_version}/amazon-linux-2023/arm64/standard/recommended/image_id"
 }
 
 locals {
@@ -59,12 +53,13 @@ locals {
   aws_ebs_csi_driver_version = "v1.29.1-eksbuild.1"
 
   # EKS Node
-  ami_image_id                 = data.aws_ami.cluster_ami.id
+  ami_id                       = nonsensitive(data.aws_ssm_parameter.al2023_ami.value)
+  ami_type                     = "AL2023_ARM_64_STANDARD"
   default_worker_instance_type = "m6g.xlarge"
   # node labels - can be use for node affinity configurations
-  default_node_group   = "eks-default"
-  default_node_type    = "ondemand"
-  extra_bootstrap_args = "--kubelet-extra-args '--anonymous-auth=false --node-labels=cluster=${local.cluster_id},ami-id=${local.ami_image_id},nodegroup=${local.default_node_group},nodetype=${local.default_node_type}'"
+  default_node_group = "eks-default"
+  default_node_type  = "ondemand"
+  node_labels        = "cluster=${local.cluster_id},ami-id=${local.ami_id},nodegroup=${local.default_node_group},nodetype=${local.default_node_type}"
   # default node selector
   node_selector = {
     "nodegroup" : local.default_node_group,

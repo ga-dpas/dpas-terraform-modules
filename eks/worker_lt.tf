@@ -1,35 +1,58 @@
-data "aws_ami" "eks_worker" {
-  filter {
-    name   = "name"
-    values = ["amazon-eks-node-${aws_eks_cluster.eks.version}-v*"]
-  }
-
-  most_recent = true
-  owners      = ["602401143452"] # Amazon EKS AMI Account ID
+data "aws_ssm_parameter" "ami" {
+  name = local.ami_type_to_ssm_param[var.ami_type]
 }
 
 locals {
-  # return first non-empty value
-  ami_id = coalesce(var.ami_image_id, data.aws_ami.eks_worker.id)
-}
+  ami_type_to_user_data_type = {
+    AL2_x86_64             = "linux"
+    AL2_ARM_64             = "linux"
+    AL2023_x86_64_STANDARD = "al2023"
+    AL2023_ARM_64_STANDARD = "al2023"
+  }
 
-resource "aws_launch_template" "node" {
-  name_prefix   = "${var.cluster_id}-node-"
-  image_id      = local.ami_id
-  instance_type = var.default_worker_instance_type
+  # Map the AMI type to the respective SSM param path
+  ami_type_to_ssm_param = {
+    AL2_x86_64             = "/aws/service/eks/optimized-ami/${var.cluster_version}/amazon-linux-2/recommended/image_id"
+    AL2_ARM_64             = "/aws/service/eks/optimized-ami/${var.cluster_version}/amazon-linux-2-arm64/recommended/image_id"
+    AL2023_x86_64_STANDARD = "/aws/service/eks/optimized-ami/${var.cluster_version}/amazon-linux-2023/x86_64/standard/recommended/image_id"
+    AL2023_ARM_64_STANDARD = "/aws/service/eks/optimized-ami/${var.cluster_version}/amazon-linux-2023/arm64/standard/recommended/image_id"
+  }
 
-  user_data = base64encode(templatefile("${path.module}/worker_userdata.tpl.sh",
+  user_data_type = local.ami_type_to_user_data_type[var.ami_type]
+
+  template_path = {
+    al2023 = "${path.module}/templates/al2023_userdata.tpl"
+    linux  = "${path.module}/templates/linux_userdata.tpl"
+  }
+
+  image_id    = coalesce(var.ami_id, nonsensitive(data.aws_ssm_parameter.ami.value))
+  node_labels = coalesce(var.node_labels, "cluster=${var.cluster_id},ami-id=${local.image_id}")
+  user_data = base64encode(templatefile(local.template_path[local.user_data_type],
     {
       cluster_id            = aws_eks_cluster.eks.id
       endpoint              = aws_eks_cluster.eks.endpoint
       certificate_authority = aws_eks_cluster.eks.certificate_authority.0.data
 
-      extra_userdata       = var.extra_userdata
-      extra_bootstrap_args = var.extra_bootstrap_args
+      cluster_service_cidr = var.cluster_service_cidr
+      cluster_ip_family    = var.cluster_ip_family
 
-      enable_imdsv2 = var.metadata_options.http_tokens == "required"
+      # Optional
+      extra_userdata       = var.extra_userdata
+      bootstrap_extra_args = var.bootstrap_extra_args
+      node_labels          = var.node_labels
     }
   ))
+}
+
+################################################################################
+# Launch template
+################################################################################
+resource "aws_launch_template" "node" {
+  name_prefix   = "${var.cluster_id}-node-"
+  image_id      = coalesce(var.ami_id, nonsensitive(data.aws_ssm_parameter.ami.value))
+  instance_type = var.default_worker_instance_type
+
+  user_data = local.user_data
 
   iam_instance_profile {
     name = aws_iam_instance_profile.eks_node.id

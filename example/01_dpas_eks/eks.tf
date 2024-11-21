@@ -317,7 +317,7 @@ module "dpas_eks_cluster" {
   create_cluster_cloudwatch_log_group = false
 
   cluster_endpoint_private_access = true
-  cluster_endpoint_public_access  = false # NOTE: If disabled, control plane will be accessible only from the VPC or connected networks
+  cluster_endpoint_public_access  = true # NOTE: If disabled, control plane will be accessible only from the VPC or connected networks
 
   # Default Tags
   owner       = local.owner
@@ -345,17 +345,18 @@ module "dpas_eks_cluster" {
   # Nodegroup config
   # This ensures core services such as VPC CNI, CoreDNS, etc. are up and running
   # so that Karpenter can be deployed and start managing compute capacity as required
-  ami_image_id                 = local.ami_image_id
+  ami_id                       = local.ami_id
+  ami_type                     = local.ami_type
   default_worker_instance_type = local.default_worker_instance_type
   min_nodes                    = 2
   max_nodes                    = 2
-  extra_bootstrap_args         = local.extra_bootstrap_args
+  node_labels                  = local.node_labels
   extra_userdata               = local.extra_userdata
   # setting instance to use IMDSv2
   ## Refer: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html
   metadata_options = {
     http_endpoint               = "enabled"
-    http_put_response_hop_limit = 1
+    http_put_response_hop_limit = 2
     http_tokens                 = "required"
     instance_metadata_tags      = "disabled"
   }

@@ -26,10 +26,16 @@ variable "cluster_endpoint_public_access_cidrs" {
   default     = ["0.0.0.0/0"]
 }
 
-variable "cluster_enabled_log_types" {
-  description = "A list of the desired control plane logs to enable. For more information, see Amazon EKS Control Plane Logging documentation (https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html)"
-  type        = list(string)
-  default     = ["audit", "api", "authenticator"]
+variable "cluster_ip_family" {
+  description = "The IP family used to assign Kubernetes pod and service addresses. Valid values are `ipv4` (default) and `ipv6`. You can only specify an IP family when you create a cluster, changing this value will force a new cluster to be created"
+  type        = string
+  default     = "ipv4"
+}
+
+variable "cluster_service_cidr" {
+  description = "The CIDR block to assign Kubernetes service IP addresses from. If you don't specify a block, Kubernetes assigns addresses from 172.20.0.0/16 CIDR blocks"
+  type        = string
+  default     = "172.20.0.0/16"
 }
 
 #--------------------------------------------------------------
@@ -51,6 +57,12 @@ variable "cloudwatch_log_group_kms_key_id" {
   description = "If a KMS Key ARN is set, this key will be used to encrypt the corresponding log group. Please be sure that the KMS Key has an appropriate key policy (https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/encrypt-log-data-kms.html)"
   type        = string
   default     = null
+}
+
+variable "cluster_enabled_log_types" {
+  description = "A list of the desired control plane logs to enable. For more information, see Amazon EKS Control Plane Logging documentation (https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html)"
+  type        = list(string)
+  default     = ["audit", "api", "authenticator"]
 }
 
 #--------------------------------------------------------------
@@ -143,10 +155,16 @@ variable "admin_access_CIDRs" {
 #--------------------------------------------------------------
 # Worker variables
 #--------------------------------------------------------------
-variable "ami_image_id" {
-  description = "Overwrites the default ami (latest Amazon EKS)"
+variable "ami_id" {
+  description = "The AMI from which to launch the instance. If not supplied, defaults to Amazon Linux2 AL2_x86_64 latest AMI"
   type        = string
   default     = ""
+}
+
+variable "ami_type" {
+  description = "Type of Amazon Machine Image (AMI) associated with the EKS Node Group. Only supported Amazon Linux (AL2_ and AL2023_) types. See the [AWS documentation](https://docs.aws.amazon.com/eks/latest/APIReference/API_Nodegroup.html#AmazonEKS-Type-Nodegroup-amiType) for valid values"
+  type        = string
+  default     = "AL2_x86_64"
 }
 
 variable "default_worker_instance_type" {
@@ -231,9 +249,15 @@ variable "metadata_options" {
   # }
 }
 
-variable "extra_bootstrap_args" {
+variable "bootstrap_extra_args" {
+  description = "Additional arguments passed to the bootstrap script (e.g. '--arg1=value --arg2')"
   type        = string
-  description = "Additional bootstrap.sh command-line arguments (e.g. '--arg1=value --arg2')"
+  default     = ""
+}
+
+variable "node_labels" {
+  type        = string
+  description = "Add node labels to worker nodes"
   default     = ""
 }
 

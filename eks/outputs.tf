@@ -8,8 +8,8 @@ output "cluster_version" {
   value = aws_eks_cluster.eks.version
 }
 
-output "ami_image_id" {
-  value = local.ami_id
+output "ami_id" {
+  value = local.image_id
 }
 
 output "node_instance_profile" {
