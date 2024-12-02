@@ -1,14 +1,14 @@
 resource "kubectl_manifest" "karpenter_on_demand_pool" {
   yaml_body = <<-YAML
-    apiVersion: karpenter.sh/v1beta1
+    apiVersion: karpenter.sh/v1
     kind: NodePool
     metadata:
       name: default-ondemand
     spec:
       disruption:
         consolidationPolicy: WhenEmpty
-        consolidateAfter: 300s
-        expireAfter: 720h # force new nodes every 30 days
+        consolidateAfter: 5m
+      expireAfter: 720h # force new nodes every 30 days
       limits:
         cpu: 100
       template:
@@ -18,6 +18,8 @@ resource "kubectl_manifest" "karpenter_on_demand_pool" {
             nodetype: ondemand
         spec:
           nodeClassRef:
+            group: karpenter.k8s.aws
+            kind: EC2NodeClass
             name: default
           requirements:
             - key: karpenter.sh/capacity-type
@@ -44,14 +46,15 @@ resource "kubectl_manifest" "karpenter_on_demand_pool" {
 
 resource "kubectl_manifest" "karpenter_spot_pool" {
   yaml_body = <<-YAML
-    apiVersion: karpenter.sh/v1beta1
+    apiVersion: karpenter.sh/v1
     kind: NodePool
     metadata:
       name: default-spot
     spec:
       disruption:
-        consolidationPolicy: WhenUnderutilized
-        expireAfter: 72h
+        consolidationPolicy: WhenEmptyOrUnderutilized
+        consolidateAfter: 5m
+      expireAfter: 72h
       limits:
         cpu: 100
       template:
@@ -61,6 +64,8 @@ resource "kubectl_manifest" "karpenter_spot_pool" {
             nodetype: spot
         spec:
           nodeClassRef:
+            group: karpenter.k8s.aws
+            kind: EC2NodeClass
             name: default
           requirements:
             - key: karpenter.sh/capacity-type
@@ -84,12 +89,14 @@ resource "kubectl_manifest" "karpenter_spot_pool" {
 
 resource "kubectl_manifest" "karpenter_node_class" {
   yaml_body = <<-YAML
-    apiVersion: karpenter.k8s.aws/v1beta1
+    apiVersion: karpenter.k8s.aws/v1
     kind: EC2NodeClass
     metadata:
       name: default
     spec:
-      amiFamily: AL2
+      amiFamily: AL2023
+      amiSelectorTerms:
+        - alias: al2023@latest
       role: ${module.dpas_eks_cluster.node_role_name}
       detailedMonitoring: true
       metadataOptions:

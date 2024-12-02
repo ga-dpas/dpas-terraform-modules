@@ -31,7 +31,7 @@ locals {
   namespace   = "dpas"
   environment = "sandbox"
 
-  cluster_version = 1.29
+  cluster_version = "1.30"
   cluster_id      = module.cluster_label.id
 
   account_id = data.aws_caller_identity.current.account_id
@@ -47,9 +47,9 @@ locals {
   database_subnet_cidrs = ["10.35.20.0/22", "10.35.24.0/22", "10.35.28.0/22"]
 
   # EKS add-ons
-  cni_version                = "v1.18.3-eksbuild.1"
-  kube_proxy_version         = "v1.29.3-eksbuild.5"
-  core_dns_version           = "v1.11.1-eksbuild.11"
+  cni_version                = "v1.19.0-eksbuild.1"
+  kube_proxy_version         = "v1.30.6-eksbuild.3"
+  core_dns_version           = "v1.11.3-eksbuild.2"
   aws_ebs_csi_driver_version = "v1.29.1-eksbuild.1"
 
   # EKS Node
@@ -60,6 +60,13 @@ locals {
   default_node_group = "eks-default"
   default_node_type  = "ondemand"
   node_labels        = "cluster=${local.cluster_id},ami-id=${local.ami_id},nodegroup=${local.default_node_group},nodetype=${local.default_node_type}"
+  node_metadata_options = {
+    http_endpoint               = "enabled"
+    http_protocol_ipv6          = "disabled"
+    http_put_response_hop_limit = 2
+    http_tokens                 = "required"
+    instance_metadata_tags      = "disabled"
+  }
   # default node selector
   node_selector = {
     "nodegroup" : local.default_node_group,
@@ -112,15 +119,15 @@ locals {
   karpenter_namespace        = "karpenter"
   karpenter_create_namespace = true
   karpenter_release_name     = "karpenter"
-  karpenter_version          = "0.37.0"
+  karpenter_version          = "1.0.0"
 
   # Flux2
   enable_flux2               = true
   flux2_namespace            = "flux-system"
   flux2_create_namespace     = true
-  flux2_version              = "2.13.0"
-  flux2_notification_version = "1.15.0"
-  flux2_sync_version         = "1.9.0"
+  flux2_version              = "2.14.0"
+  flux2_notification_version = "1.16.0"
+  flux2_sync_version         = "1.10.0"
 
   # provide organisation tags
   tags = {

@@ -9,6 +9,14 @@ controller:
     limits:
       cpu: 1
       memory: 1Gi
+# NOTE: Overriding image due to image pull error: https://github.com/aws/karpenter-provider-aws/issues/6761
+postInstallHook:
+  image:
+    repository: bitnami/kubectl
+    tag: "1.30"
+    digest: sha256:13210e634b6368173205e8559d7c9216cce13795f28f93c39b1bb8784cac8074
+webhook:
+  enabled: false
 # -- Controller service-account
 serviceAccount:
   create: true
