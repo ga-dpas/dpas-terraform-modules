@@ -354,12 +354,7 @@ module "dpas_eks_cluster" {
   extra_userdata               = local.extra_userdata
   # setting instance to use IMDSv2
   ## Refer: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html
-  metadata_options = {
-    http_endpoint               = "enabled"
-    http_put_response_hop_limit = 2
-    http_tokens                 = "required"
-    instance_metadata_tags      = "disabled"
-  }
+  metadata_options = local.node_metadata_options
 
   iam_role_attach_cni_policy = false
 

@@ -1,6 +1,6 @@
 resource "kubectl_manifest" "karpenter_on_demand_pool" {
   yaml_body = <<-YAML
-    apiVersion: karpenter.sh/v1beta1
+    apiVersion: karpenter.sh/v1
     kind: NodePool
     metadata:
       name: default-ondemand
@@ -44,7 +44,7 @@ resource "kubectl_manifest" "karpenter_on_demand_pool" {
 
 resource "kubectl_manifest" "karpenter_spot_pool" {
   yaml_body = <<-YAML
-    apiVersion: karpenter.sh/v1beta1
+    apiVersion: karpenter.sh/v1
     kind: NodePool
     metadata:
       name: default-spot
@@ -84,12 +84,14 @@ resource "kubectl_manifest" "karpenter_spot_pool" {
 
 resource "kubectl_manifest" "karpenter_node_class" {
   yaml_body = <<-YAML
-    apiVersion: karpenter.k8s.aws/v1beta1
+    apiVersion: karpenter.k8s.aws/v1
     kind: EC2NodeClass
     metadata:
       name: default
     spec:
-      amiFamily: AL2
+      amiFamily: AL2023
+      amiSelectorTerms:
+        - alias: al2023@latest
       role: ${module.dpas_eks_cluster.node_role_name}
       detailedMonitoring: true
       metadataOptions:

@@ -115,6 +115,14 @@ data "aws_iam_policy_document" "karpenter_controller_trust_policy" {
 
     condition {
       test     = "StringEquals"
+      variable = "aws:RequestTag/eks:eks-cluster-name"
+      values = [
+        local.cluster_id
+      ]
+    }
+
+    condition {
+      test     = "StringEquals"
       variable = "ec2:CreateAction"
       values = [
         "RunInstances",
@@ -153,9 +161,18 @@ data "aws_iam_policy_document" "karpenter_controller_trust_policy" {
     }
 
     condition {
+      test     = "StringEqualsIfExists"
+      variable = "aws:RequestTag/eks:eks-cluster-name"
+      values = [
+        local.cluster_id
+      ]
+    }
+
+    condition {
       test     = "ForAllValues:StringEquals"
       variable = "aws:TagKeys"
       values = [
+        "eks:eks-cluster-name",
         "karpenter.sh/nodeclaim",
         "Name"
       ]
@@ -375,7 +392,6 @@ data "aws_iam_policy_document" "karpenter_controller_trust_policy" {
   }
 
   statement {
-    sid = "AllowAPIServerEndpointDiscovery"
     actions = [
       "eks:DescribeCluster",
     ]

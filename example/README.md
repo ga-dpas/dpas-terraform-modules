@@ -61,7 +61,7 @@ Once you have created terraform backend, you can perform the following steps to 
 | Variable      | Description                                                                     | Default            |
 |:--------------|:--------------------------------------------------------------------------------|--------------------|
 | `region`      | The AWS region to provision resources                                           | `"ap-southeast-2"` |
-| `owner`       | The owner of the environment                                                    | `"ga"`            |
+| `owner`       | The owner of the environment                                                    | `"ga"`             |
 | `namespace`   | The name used for creation of backend resources like the terraform state bucket | `"dpas"`           |
 | `environment` | The name of the environment - e.g. `dev`, `sandbox`, `prod`                     | `"sandbox"`        |
 | `tags`        | Supply tags as per your organisation need                                       |                    |
