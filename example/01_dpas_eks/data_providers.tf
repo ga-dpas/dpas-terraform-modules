@@ -31,7 +31,7 @@ locals {
   namespace   = "dpas"
   environment = "sandbox"
 
-  cluster_version = "1.30"
+  cluster_version = "1.31"
   cluster_id      = module.cluster_label.id
 
   account_id = data.aws_caller_identity.current.account_id
@@ -47,10 +47,10 @@ locals {
   database_subnet_cidrs = ["10.35.20.0/22", "10.35.24.0/22", "10.35.28.0/22"]
 
   # EKS add-ons
-  cni_version                = "v1.19.0-eksbuild.1"
-  kube_proxy_version         = "v1.30.6-eksbuild.3"
-  core_dns_version           = "v1.11.3-eksbuild.2"
-  aws_ebs_csi_driver_version = "v1.29.1-eksbuild.1"
+  cni_version                = "v1.19.2-eksbuild.1"
+  kube_proxy_version         = "v1.31.3-eksbuild.2"
+  core_dns_version           = "v1.11.4-eksbuild.2"
+  aws_ebs_csi_driver_version = "v1.39.0-eksbuild.1"
 
   # EKS Node
   ami_id                       = nonsensitive(data.aws_ssm_parameter.al2023_ami.value)
