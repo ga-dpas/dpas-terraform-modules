@@ -54,12 +54,12 @@ data "aws_iam_policy_document" "karpenter_controller_trust_policy" {
     ]
 
     resources = [
-      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}::image/*",
-      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}::snapshot/*",
-      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:spot-instances-request/*",
-      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:security-group/*",
-      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:subnet/*",
-      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:launch-template/*"
+      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}::image/*",
+      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}::snapshot/*",
+      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:spot-instances-request/*",
+      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:security-group/*",
+      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:subnet/*",
+      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:launch-template/*"
     ]
   }
 
@@ -72,11 +72,11 @@ data "aws_iam_policy_document" "karpenter_controller_trust_policy" {
     ]
 
     resources = [
-      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:fleet/*",
-      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:instance/*",
-      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:volume/*",
-      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:network-interface/*",
-      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:launch-template/*"
+      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:fleet/*",
+      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:instance/*",
+      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:volume/*",
+      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:network-interface/*",
+      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:launch-template/*"
     ]
 
     condition {
@@ -99,12 +99,12 @@ data "aws_iam_policy_document" "karpenter_controller_trust_policy" {
     ]
 
     resources = [
-      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:fleet/*",
-      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:instance/*",
-      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:spot-instances-request/*",
-      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:volume/*",
-      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:network-interface/*",
-      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:launch-template/*"
+      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:fleet/*",
+      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:instance/*",
+      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:spot-instances-request/*",
+      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:volume/*",
+      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:network-interface/*",
+      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:launch-template/*"
     ]
 
     condition {
@@ -145,7 +145,7 @@ data "aws_iam_policy_document" "karpenter_controller_trust_policy" {
     ]
 
     resources = [
-      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:instance/*",
+      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:instance/*",
     ]
 
     condition {
@@ -187,8 +187,8 @@ data "aws_iam_policy_document" "karpenter_controller_trust_policy" {
     ]
 
     resources = [
-      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:instance/*",
-      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.name}:*:launch-template/*"
+      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:instance/*",
+      "arn:${data.aws_partition.current.partition}:ec2:${data.aws_region.current.region}:*:launch-template/*"
     ]
 
     condition {
@@ -223,7 +223,7 @@ data "aws_iam_policy_document" "karpenter_controller_trust_policy" {
     condition {
       test     = "StringEquals"
       variable = "aws:RequestedRegion"
-      values   = [data.aws_region.current.name]
+      values   = [data.aws_region.current.region]
     }
   }
 
@@ -234,7 +234,7 @@ data "aws_iam_policy_document" "karpenter_controller_trust_policy" {
     ]
 
     resources = [
-      "arn:${data.aws_partition.current.partition}:ssm:${data.aws_region.current.name}::parameter/aws/service/*"
+      "arn:${data.aws_partition.current.partition}:ssm:${data.aws_region.current.region}::parameter/aws/service/*"
     ]
   }
 
@@ -295,7 +295,7 @@ data "aws_iam_policy_document" "karpenter_controller_trust_policy" {
     condition {
       test     = "StringEquals"
       variable = "aws:RequestTag/topology.kubernetes.io/region"
-      values   = [data.aws_region.current.name]
+      values   = [data.aws_region.current.region]
     }
 
 
@@ -323,7 +323,7 @@ data "aws_iam_policy_document" "karpenter_controller_trust_policy" {
     condition {
       test     = "StringEquals"
       variable = "aws:ResourceTag/topology.kubernetes.io/region"
-      values   = [data.aws_region.current.name]
+      values   = [data.aws_region.current.region]
     }
 
     condition {
@@ -335,7 +335,7 @@ data "aws_iam_policy_document" "karpenter_controller_trust_policy" {
     condition {
       test     = "StringEquals"
       variable = "aws:RequestTag/topology.kubernetes.io/region"
-      values   = [data.aws_region.current.name]
+      values   = [data.aws_region.current.region]
     }
 
 
@@ -371,7 +371,7 @@ data "aws_iam_policy_document" "karpenter_controller_trust_policy" {
     condition {
       test     = "StringEquals"
       variable = "aws:ResourceTag/topology.kubernetes.io/region"
-      values   = [data.aws_region.current.name]
+      values   = [data.aws_region.current.region]
     }
 
 
@@ -397,7 +397,7 @@ data "aws_iam_policy_document" "karpenter_controller_trust_policy" {
     ]
 
     resources = [
-      "arn:${data.aws_partition.current.partition}:eks:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:cluster/${local.cluster_id}",
+      "arn:${data.aws_partition.current.partition}:eks:${data.aws_region.current.region}:${data.aws_caller_identity.current.account_id}:cluster/${local.cluster_id}",
     ]
   }
 }
@@ -544,4 +544,15 @@ resource "helm_release" "karpenter" {
     module.role_karpenter_controller,
     helm_release.karpenter_crd
   ]
+}
+
+# Ref: https://karpenter.sh/docs/troubleshooting/#missing-service-linked-role
+data "aws_iam_role" "service_linked_role_ec2_spot" {
+  name = "AWSServiceRoleForEC2Spot"
+}
+
+resource "aws_iam_service_linked_role" "service_linked_role_ec2_spot" {
+  count = data.aws_iam_role.service_linked_role_ec2_spot.id != "" ? 0 : 1
+
+  aws_service_name = "spot.amazonaws.com"
 }

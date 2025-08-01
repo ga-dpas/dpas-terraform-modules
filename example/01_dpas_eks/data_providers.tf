@@ -39,12 +39,11 @@ locals {
   dns_suffix = data.aws_partition.current.dns_suffix
 
   # VPC
-  enable_s3_endpoint    = true
-  enable_nat_gateway    = true
-  vpc_cidr              = "10.35.0.0/16"
-  public_subnet_cidrs   = ["10.35.0.0/22", "10.35.4.0/22", "10.35.8.0/22"]
-  private_subnet_cidrs  = ["10.35.32.0/19", "10.35.64.0/19", "10.35.96.0/19"]
-  database_subnet_cidrs = ["10.35.20.0/22", "10.35.24.0/22", "10.35.28.0/22"]
+  enable_vpc_s3_endpoint = true
+  vpc_cidr               = "10.35.0.0/16"
+  public_subnet_cidrs    = ["10.35.0.0/22", "10.35.4.0/22", "10.35.8.0/22"]
+  private_subnet_cidrs   = ["10.35.32.0/19", "10.35.64.0/19", "10.35.96.0/19"]
+  database_subnet_cidrs  = ["10.35.20.0/22", "10.35.24.0/22", "10.35.28.0/22"]
 
   # EKS add-ons
   cni_version                = "v1.19.2-eksbuild.1"

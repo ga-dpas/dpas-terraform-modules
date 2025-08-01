@@ -335,7 +335,7 @@ module "dpas_eks_cluster" {
 
   # VPC and subnets config
   create_vpc                   = true
-  enable_vpc_s3_endpoint       = true
+  enable_vpc_s3_endpoint       = local.enable_vpc_s3_endpoint
   create_database_subnet_group = false # NOTE: This is created in db module instead
   vpc_cidr                     = local.vpc_cidr
   public_subnet_cidrs          = local.public_subnet_cidrs
