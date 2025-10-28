@@ -54,7 +54,9 @@ locals {
   # EKS Node
   ami_id                       = nonsensitive(data.aws_ssm_parameter.al2023_ami.value)
   ami_type                     = "AL2023_ARM_64_STANDARD"
-  default_worker_instance_type = "m6g.xlarge"
+  default_worker_instance_type = "m8g.xlarge"
+  default_min_nodes            = 2
+  default_max_nodes            = 3
   # node labels - can be use for node affinity configurations
   default_node_group = "eks-default"
   default_node_type  = "ondemand"

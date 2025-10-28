@@ -348,8 +348,8 @@ module "dpas_eks_cluster" {
   ami_id                       = local.ami_id
   ami_type                     = local.ami_type
   default_worker_instance_type = local.default_worker_instance_type
-  min_nodes                    = 2
-  max_nodes                    = 2
+  min_nodes                    = local.default_min_nodes
+  max_nodes                    = local.default_max_nodes
   node_labels                  = local.node_labels
   extra_userdata               = local.extra_userdata
   # setting instance to use IMDSv2
