@@ -31,7 +31,7 @@ locals {
   namespace   = "dpas"
   environment = "sandbox"
 
-  cluster_version = "1.31"
+  cluster_version = "1.32"
   cluster_id      = module.cluster_label.id
 
   account_id = data.aws_caller_identity.current.account_id
