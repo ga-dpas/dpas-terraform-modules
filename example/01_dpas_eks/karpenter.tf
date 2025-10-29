@@ -1,6 +1,7 @@
 # Reference docs:
 ## https://karpenter.sh/v0.19.3/getting-started/getting-started-with-eksctl/
 ## https://karpenter.sh/v0.19.3/getting-started/migrating-from-cas/
+## https://karpenter.sh/docs/upgrading/upgrade-guide/
 
 locals {
   enable_spot_termination = true
@@ -43,7 +44,7 @@ locals {
 
 ################################################################################
 # Karpenter controller IAM Role for Service Account (IRSA)
-# Reference: https://github.com/marcincuber/eks/blob/main/terraform/oidc-iam-policies.tf#L335
+# Reference: https://raw.githubusercontent.com/aws/karpenter-provider-aws/main/website/content/en/preview/getting-started/getting-started-with-karpenter/cloudformation.yaml
 ################################################################################
 data "aws_iam_policy_document" "karpenter_controller_trust_policy" {
   statement {
@@ -386,6 +387,15 @@ data "aws_iam_policy_document" "karpenter_controller_trust_policy" {
     sid = "AllowInstanceProfileReadActions"
     actions = [
       "iam:GetInstanceProfile"
+    ]
+
+    resources = ["*"]
+  }
+
+  statement {
+    sid = "AllowUnscopedInstanceProfileListAction"
+    actions = [
+      "iam:ListInstanceProfiles"
     ]
 
     resources = ["*"]
