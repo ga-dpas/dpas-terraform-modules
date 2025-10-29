@@ -46,10 +46,10 @@ locals {
   database_subnet_cidrs  = ["10.35.20.0/22", "10.35.24.0/22", "10.35.28.0/22"]
 
   # EKS add-ons
-  cni_version                = "v1.19.2-eksbuild.1"
-  kube_proxy_version         = "v1.31.3-eksbuild.2"
-  core_dns_version           = "v1.11.4-eksbuild.2"
-  aws_ebs_csi_driver_version = "v1.39.0-eksbuild.1"
+  cni_version                = "v1.20.4-eksbuild.1"
+  kube_proxy_version         = "v1.32.6-eksbuild.12"
+  core_dns_version           = "v1.11.4-eksbuild.24"
+  aws_ebs_csi_driver_version = "v1.51.1-eksbuild.1"
 
   # EKS Node
   ami_id                       = nonsensitive(data.aws_ssm_parameter.al2023_ami.value)
