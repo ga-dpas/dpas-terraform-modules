@@ -120,7 +120,7 @@ locals {
   karpenter_namespace        = "karpenter"
   karpenter_create_namespace = true
   karpenter_release_name     = "karpenter"
-  karpenter_version          = "1.0.0"
+  karpenter_version          = "1.2.1"
 
   # Flux2
   enable_flux2               = true
