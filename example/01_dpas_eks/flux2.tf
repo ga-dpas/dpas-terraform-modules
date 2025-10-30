@@ -15,16 +15,16 @@ module "fluxcd_flux2" {
   flux2_sync_version         = local.flux2_sync_version
 
   # flux sync configurations
-  # NOTE: Update as per your setup!
-  flux2_git_repo_url = "ssh://git@github.com/ga-dpas/dpas-k8s-example-deployment"
-  flux2_git_branch   = "main"
-  flux2_git_path     = "workspaces/dpas-sandbox"
+  # For Example:
+  # flux2_git_repo_url = "ssh://git@github.com/ga-dpas/dpas-k8s-example-deployment"
+  # flux2_git_branch   = "main"
+  # flux2_git_path     = "workspaces/dpas-sandbox"
 
   # flux notification configurations
-  # NOTE: update as per your setup!
-  flux2_webhook_url     = "provide-webhook-url"
-  flux2_webhook_type    = "slack"
-  flux2_webhook_channel = "dpas-system-notifications"
+  # For Example:
+  # flux2_webhook_url     = "provide-webhook-url"
+  # flux2_webhook_type    = "slack"
+  # flux2_webhook_channel = "dpas-system-notifications"
 
   # notification events for alerting
   flux2_additional_alert_event_sources = []

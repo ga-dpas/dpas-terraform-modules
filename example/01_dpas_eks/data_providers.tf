@@ -126,15 +126,9 @@ locals {
   enable_flux2               = true
   flux2_namespace            = "flux-system"
   flux2_create_namespace     = true
-  flux2_version              = "2.14.0"
-  flux2_notification_version = "1.16.0"
-  flux2_sync_version         = "1.10.0"
-
-  # # Aurora Postgres config
-  # aurora_engine                  = "aurora-postgresql"
-  # aurora_engine_version          = "14.9"
-  # aurora_cluster_master_username = "superuser"
-  # aurora_cluster_master_password = random_string.master_password.result
+  flux2_version              = "2.17.0"
+  flux2_notification_version = "1.19.0"
+  flux2_sync_version         = "1.14.0"
 
   # provide organisation tags
   tags = {
