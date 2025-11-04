@@ -33,7 +33,7 @@ resource "kubectl_manifest" "karpenter_on_demand_pool" {
               values: [nano, micro, small]
             - key: karpenter.k8s.aws/instance-family
               operator: In
-              values: [m5, m5a, m5ad, m5d, m6a, m6g, m6gd, m6i, m6id]
+              values: [m8g, m8gd, m7a, m7g, m7gd, m7i, m6a, m6g, m6gd, m6i, m6id]
             - key: "karpenter.k8s.aws/instance-cpu"
               operator: In
               values: ["2","4","8"]
@@ -79,7 +79,7 @@ resource "kubectl_manifest" "karpenter_spot_pool" {
               values: [nano, micro, small]
             - key: karpenter.k8s.aws/instance-family
               operator: In
-              values: [m5, m5a, m5ad, m5d, m6a, m6g, m6gd, m6i, m6id]
+              values: [m8g, m8gd, m7a, m7g, m7gd, m7i, m6a, m6g, m6gd, m6i, m6id]
   YAML
 
   depends_on = [
