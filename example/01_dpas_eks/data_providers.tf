@@ -31,7 +31,7 @@ locals {
   namespace   = "dpas"
   environment = "sandbox"
 
-  cluster_version = "1.32"
+  cluster_version = "1.34"
   cluster_id      = module.cluster_label.id
 
   account_id = data.aws_caller_identity.current.account_id
@@ -47,8 +47,8 @@ locals {
 
   # EKS add-ons
   cni_version                = "v1.20.4-eksbuild.1"
-  kube_proxy_version         = "v1.32.6-eksbuild.12"
-  core_dns_version           = "v1.11.4-eksbuild.24"
+  kube_proxy_version         = "v1.34.0-eksbuild.4"
+  core_dns_version           = "v1.12.4-eksbuild.1"
   aws_ebs_csi_driver_version = "v1.51.1-eksbuild.1"
 
   # EKS Node
