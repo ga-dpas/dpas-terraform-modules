@@ -59,21 +59,6 @@ resource "aws_s3_bucket_ownership_controls" "terraform_state_storage_s3" {
   bucket = aws_s3_bucket.terraform_state_storage_s3.id
 
   rule {
-    object_ownership = var.data_bucket_object_ownership
+    object_ownership = var.bucket_object_ownership
   }
-}
-
-# The terraform lock database resource
-resource "aws_dynamodb_table" "terraform_state_lock" {
-  name           = "${module.backend_label.id}-tflock"
-  read_capacity  = 5
-  write_capacity = 5
-  hash_key       = "LockID"
-
-  attribute {
-    name = "LockID"
-    type = "S"
-  }
-
-  tags = module.backend_label.tags
 }

@@ -25,7 +25,7 @@ variable "attributes" {
   description = "Additional attributes (e.g. `region`)"
 }
 
-variable "data_bucket_object_ownership" {
+variable "bucket_object_ownership" {
   type        = string
   default     = "BucketOwnerEnforced"
   description = "Specifies the S3 object ownership control. Expected value - `ObjectWriter`, `BucketOwnerPreferred`, or 'BucketOwnerEnforced'"
