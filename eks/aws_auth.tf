@@ -15,7 +15,7 @@ locals {
     mapAccounts = length(var.aws_auth_accounts) == 0 ? null : yamlencode(var.aws_auth_accounts)
   }
 }
-resource "kubernetes_config_map" "aws_auth" {
+resource "kubernetes_config_map_v1" "aws_auth" {
   metadata {
     name      = "aws-auth"
     namespace = "kube-system"

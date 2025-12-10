@@ -12,7 +12,7 @@ resource "aws_eks_addon" "eks_addons" {
 
   depends_on = [
     aws_autoscaling_group.node,
-    kubernetes_config_map.aws_auth
+    kubernetes_config_map_v1.aws_auth
   ]
 
   tags = merge(

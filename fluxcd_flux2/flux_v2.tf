@@ -27,7 +27,7 @@ resource "tls_private_key" "flux2" {
 }
 
 # Generate a Kubernetes secret with the Git credentials
-resource "kubernetes_secret" "flux2" {
+resource "kubernetes_secret_v1" "flux2" {
   depends_on = [helm_release.flux2]
 
   metadata {
@@ -81,7 +81,7 @@ resource "helm_release" "flux2_sync" {
       git_path          = var.flux2_git_path
       git_poll_interval = var.flux2_git_poll_interval
       git_timeout       = var.flux2_git_timeout
-      flux_git_secret   = kubernetes_secret.flux2.metadata[0].name
+      flux_git_secret   = kubernetes_secret_v1.flux2.metadata[0].name
     })
   ]
 }
