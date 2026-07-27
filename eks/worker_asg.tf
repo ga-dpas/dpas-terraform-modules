@@ -16,6 +16,14 @@ resource "aws_autoscaling_group" "node" {
     version = aws_launch_template.node.latest_version
   }
 
+  # Triggers native AWS rolling update on AMI change
+  instance_refresh {
+    strategy = "Rolling"
+    preferences {
+      min_healthy_percentage = 66
+    }
+  }
+
   # Use a dynamic tag block rather than tags = [<list of tags>] to workaround this issue https://github.com/hashicorp/terraform-provider-aws/issues/14085
   dynamic "tag" {
     for_each = merge(

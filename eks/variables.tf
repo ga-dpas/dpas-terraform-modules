@@ -176,19 +176,19 @@ variable "default_worker_instance_type" {
 variable "min_nodes" {
   description = "The minimum number of on-demand nodes to run"
   type        = number
-  default     = 0
+  default     = 2
 }
 
 variable "desired_nodes" {
   description = "Desired number of nodes only used when first launching the cluster"
   type        = number
-  default     = 0
+  default     = 2
 }
 
 variable "max_nodes" {
   description = "Max number of nodes you want to run"
   type        = number
-  default     = 0
+  default     = 3
 }
 
 variable "root_block_device_mappings" {
