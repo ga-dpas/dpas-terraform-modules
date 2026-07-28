@@ -16,11 +16,15 @@ resource "aws_autoscaling_group" "node" {
     version = aws_launch_template.node.latest_version
   }
 
-  # Triggers native AWS rolling update on AMI change
+  # if set, safely terminate and replace worker nodes sequentially without dropping cluster capacity
+  max_instance_lifetime = var.max_instance_lifetime
+
+  # instance recycling - trigger native AWS rolling update
   instance_refresh {
     strategy = "Rolling"
     preferences {
       min_healthy_percentage = 66
+      instance_warmup        = 300 # Time (seconds) allowed for node initialization & EKS joining
     }
   }
 
