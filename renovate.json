@@ -1,0 +1,21 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "dependencyDashboard": true,
+  "prConcurrentLimit": 3,
+  "prHourlyLimit": 1,
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Group non-major Terraform dependency updates into a single PR",
+      "matchManagers": ["terraform"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "Terraform dependencies (non-major)",
+      "groupSlug": "terraform-dependencies-non-major"
+    }
+  ],
+  "ignorePaths": ["**/node_modules/**", "**/bower_components/**"]
+}
